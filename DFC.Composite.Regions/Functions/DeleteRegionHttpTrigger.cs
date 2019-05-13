@@ -4,6 +4,8 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using DFC.Common.Standard.Logging;
+using DFC.Composite.Regions.Models;
+using DFC.Composite.Regions.Services;
 using DFC.Functions.DI.Standard.Attributes;
 using DFC.HTTP.Standard;
 using DFC.JSON.Standard;
@@ -36,7 +38,8 @@ namespace DFC.Composite.Regions.Functions
             [Inject] ILoggerHelper loggerHelper,
             [Inject] IHttpRequestHelper httpRequestHelper,
             [Inject] IHttpResponseMessageHelper httpResponseMessageHelper,
-            [Inject] IJsonHelper jsonHelper
+            [Inject] IJsonHelper jsonHelper,
+            [Inject] IRegionService regionService
         )
         {
             loggerHelper.LogMethodEnter(log);
@@ -56,56 +59,41 @@ namespace DFC.Composite.Regions.Functions
 
             if (string.IsNullOrEmpty(path))
             {
-                loggerHelper.LogInformationMessage(log, correlationGuid, $"Missing value in request for '{nameof(path)}");
+                loggerHelper.LogInformationMessage(log, correlationGuid, $"Missing value in request for '{nameof(path)}'");
                 return httpResponseMessageHelper.BadRequest();
             }
 
-            if (pageRegion == 0)
+            if (!Uri.IsWellFormedUriString(path, UriKind.Absolute))
             {
-                loggerHelper.LogInformationMessage(log, correlationGuid, $"Missing value in request for '{nameof(pageRegion)}");
+                loggerHelper.LogInformationMessage(log, correlationGuid, $"Request value for '{nameof(path)}' is not a valid absolute Uri");
                 return httpResponseMessageHelper.BadRequest();
             }
 
-            Models.Region regionRequest;
-
-            try
+            if (pageRegion == 0 || !Enum.IsDefined(typeof(PageRegions), pageRegion))
             {
-                loggerHelper.LogInformationMessage(log, correlationGuid, "Attempt to get resource from body of the request");
-                regionRequest = await httpRequestHelper.GetResourceFromRequest<Models.Region>(req);
-            }
-            catch (JsonException ex)
-            {
-                loggerHelper.LogError(log, correlationGuid, "Unable to retrieve body from req", ex);
-                return httpResponseMessageHelper.UnprocessableEntity(ex);
+                loggerHelper.LogInformationMessage(log, correlationGuid, $"Missing/invalid value in request for '{nameof(pageRegion)}'");
+                return httpResponseMessageHelper.BadRequest();
             }
 
+            PageRegions pageRegionValue = (PageRegions)pageRegion;
 
+            loggerHelper.LogInformationMessage(log, correlationGuid, $"Attempting to get Region {pageRegionValue} for Path {path}");
 
+            var regionModel = await regionService.GetAsync(path, pageRegionValue);
 
+            if (regionModel == null)
+            {
+                loggerHelper.LogInformationMessage(log, correlationGuid, $"Region does not exist for {pageRegionValue} for Path {path}");
+                return httpResponseMessageHelper.NoContent();
+            }
 
-            //////////////////////////////////////
-            // sample code - to delete vvvvvvvvvvv
-            //////////////////////////////////////
+            loggerHelper.LogInformationMessage(log, correlationGuid, $"Attempting to delete Region {pageRegionValue} for Path {path}");
 
-
-
-
-            var region = regionRequest;
-            region.PageRegion = pageRegion;
-
-
-            //////////////////////////////////////
-            // sample code - to delete ^^^^^^^^^^^
-            //////////////////////////////////////
-
-
-
-
-
+            var result = await regionService.DeleteAsync(regionModel.DocumentId.Value);
 
             loggerHelper.LogMethodExit(log);
 
-            return region != null
+            return result
                 ? httpResponseMessageHelper.Ok()
                 : httpResponseMessageHelper.NoContent();
         }

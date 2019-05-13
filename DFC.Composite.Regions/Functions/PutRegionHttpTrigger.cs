@@ -1,13 +1,16 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using DFC.Common.Standard.Logging;
+using DFC.Composite.Regions.Services;
 using DFC.Functions.DI.Standard.Attributes;
 using DFC.HTTP.Standard;
 using DFC.JSON.Standard;
 using DFC.Swagger.Standard.Annotations;
+using HtmlAgilityPack;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -41,7 +44,8 @@ namespace DFC.Composite.Regions.Functions
             [Inject] ILoggerHelper loggerHelper,
             [Inject] IHttpRequestHelper httpRequestHelper,
             [Inject] IHttpResponseMessageHelper httpResponseMessageHelper,
-            [Inject] IJsonHelper jsonHelper
+            [Inject] IJsonHelper jsonHelper,
+            [Inject] IRegionService regionService
         )
         {
             loggerHelper.LogMethodEnter(log);
@@ -61,22 +65,35 @@ namespace DFC.Composite.Regions.Functions
 
             if (string.IsNullOrEmpty(path))
             {
-                loggerHelper.LogInformationMessage(log, correlationGuid, $"Missing value in request for '{nameof(path)}");
+                loggerHelper.LogInformationMessage(log, correlationGuid, $"Missing value in request for '{nameof(path)}'");
                 return httpResponseMessageHelper.BadRequest();
             }
 
-            if (pageRegion == 0)
+            if (!Uri.IsWellFormedUriString(path, UriKind.Absolute))
             {
-                loggerHelper.LogInformationMessage(log, correlationGuid, $"Missing value in request for '{nameof(pageRegion)}");
+                loggerHelper.LogInformationMessage(log, correlationGuid, $"Request value for '{nameof(path)}' is not a valid absolute Uri");
                 return httpResponseMessageHelper.BadRequest();
             }
 
+            if (pageRegion == 0 || !Enum.IsDefined(typeof(PageRegions), pageRegion))
+            {
+                loggerHelper.LogInformationMessage(log, correlationGuid, $"Missing/invalid value in request for '{nameof(pageRegion)}'");
+                return httpResponseMessageHelper.BadRequest();
+            }
+
+            PageRegions pageRegionValue = (PageRegions)pageRegion;
             Models.Region regionRequest;
 
             try
             {
                 loggerHelper.LogInformationMessage(log, correlationGuid, "Attempt to get resource from body of the request");
                 regionRequest = await httpRequestHelper.GetResourceFromRequest<Models.Region>(req);
+
+                if (regionRequest == null)
+                {
+                    loggerHelper.LogInformationMessage(log, correlationGuid, "Missing body in req");
+                    return httpResponseMessageHelper.UnprocessableEntity();
+                }
             }
             catch (JsonException ex)
             {
@@ -84,34 +101,50 @@ namespace DFC.Composite.Regions.Functions
                 return httpResponseMessageHelper.UnprocessableEntity(ex);
             }
 
+            if (!regionRequest.DocumentId.HasValue)
+            {
+                loggerHelper.LogInformationMessage(log, correlationGuid, $"Request value for '{nameof(regionRequest.DocumentId)}' is missing");
+                return httpResponseMessageHelper.BadRequest();
+            }
 
+             if (!Uri.IsWellFormedUriString(regionRequest.Path, UriKind.Absolute))
+            {
+                loggerHelper.LogInformationMessage(log, correlationGuid, $"Request value for '{nameof(regionRequest.Path)}' is not a valid absolute Uri");
+                return httpResponseMessageHelper.BadRequest();
+            }
 
+           if (path != regionRequest.Path)
+            {
+                loggerHelper.LogInformationMessage(log, correlationGuid, $"Request value for '{nameof(regionRequest.Path)}' does not match resource path value");
+                return httpResponseMessageHelper.BadRequest();
+            }
 
+            if (pageRegionValue != regionRequest.PageRegion)
+            {
+                loggerHelper.LogInformationMessage(log, correlationGuid, $"Request value for '{nameof(regionRequest.PageRegion)}' does not match resource path value");
+                return httpResponseMessageHelper.BadRequest();
+            }
 
-            //////////////////////////////////////
-            // sample code - to delete vvvvvvvvvvv
-            //////////////////////////////////////
+            if (!string.IsNullOrEmpty(regionRequest.OfflineHtml))
+            {
+                var htmlDoc = new HtmlDocument();
 
+                htmlDoc.LoadHtml(regionRequest.OfflineHtml);
 
-
-
-            var region = regionRequest;
-            region.PageRegion = pageRegion;
-
-
-            //////////////////////////////////////
-            // sample code - to delete ^^^^^^^^^^^
-            //////////////////////////////////////
-
-
-
-
-
+                if (htmlDoc.ParseErrors.Any())
+                {
+                    loggerHelper.LogInformationMessage(log, correlationGuid, $"Request value for '{nameof(regionRequest.OfflineHtml)}' contains malformed HTML");
+                    return httpResponseMessageHelper.BadRequest();
+                }
+            }
+            
+            loggerHelper.LogInformationMessage(log, correlationGuid, string.Format("Attempting to update region {0}", regionRequest.DocumentId));
+            var replacedRegion = await regionService.ReplaceAsync(regionRequest);
 
             loggerHelper.LogMethodExit(log);
 
-            return region != null
-                ? httpResponseMessageHelper.Ok(jsonHelper.SerializeObjectAndRenameIdProperty(region, "id", nameof(Models.Region.DocumentId)))
+            return replacedRegion != null
+                ? httpResponseMessageHelper.Ok(jsonHelper.SerializeObjectAndRenameIdProperty(replacedRegion, "id", nameof(Models.Region.DocumentId)))
                 : httpResponseMessageHelper.NoContent();
         }
     }

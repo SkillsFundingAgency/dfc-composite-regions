@@ -9,6 +9,8 @@ using DFC.Common.Standard.Logging;
 using DFC.HTTP.Standard;
 using DFC.JSON.Standard;
 using DFC.Swagger.Standard;
+using DFC.Composite.Regions.Services;
+using DFC.Composite.Regions.Cosmos.Provider;
 
 [assembly: WebJobsStartup(typeof(DFC.Composite.Regions.Startup.WebJobsExtensionStartup), "Web Jobs Extension Startup")]
 
@@ -20,21 +22,14 @@ namespace DFC.Composite.Regions.Startup
         {
             builder.AddDependencyInjection();
 
-            //builder.Services.AddSingleton<IResourceHelper, ResourceHelper>();
-            //builder.Services.AddSingleton<IValidate, Validate>();
             builder.Services.AddSingleton<ILoggerHelper, LoggerHelper>();
             builder.Services.AddSingleton<IHttpRequestHelper, HttpRequestHelper>();
             builder.Services.AddSingleton<IHttpResponseMessageHelper, HttpResponseMessageHelper>();
             builder.Services.AddSingleton<IJsonHelper, JsonHelper>();
-            //builder.Services.AddSingleton<IDocumentDBProvider, DocumentDBProvider>();
+            builder.Services.AddSingleton<IDocumentDBProvider, DocumentDBProvider>();
 
-            //builder.Services.AddScoped<IActionPlanPatchService, ActionPlanPatchService>();
+            builder.Services.AddScoped<IRegionService, RegionService>();
             builder.Services.AddScoped<ISwaggerDocumentGenerator, SwaggerDocumentGenerator>();
-            //builder.Services.AddScoped<IGetActionPlanHttpTriggerService, GetActionPlanHttpTriggerService>();
-            //builder.Services.AddScoped<IGetActionPlanByIdHttpTriggerService, GetActionPlanByIdHttpTriggerService>();
-            //builder.Services.AddScoped<IPostActionPlanHttpTriggerService, PostActionPlanHttpTriggerService>();
-            //builder.Services.AddScoped<IPatchActionPlanHttpTriggerService, PatchActionPlanHttpTriggerService>();
-            //builder.Services.AddScoped<IActionPlanChangeFeedTriggerService, ActionPlanChangeFeedTriggerService>();
         }
     }
 }

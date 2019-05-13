@@ -1,10 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using DFC.Common.Standard.Logging;
+using DFC.Composite.Regions.Models;
+using DFC.Composite.Regions.Services;
 using DFC.Functions.DI.Standard.Attributes;
 using DFC.HTTP.Standard;
 using DFC.JSON.Standard;
@@ -20,21 +21,23 @@ namespace DFC.Composite.Regions.Functions
 {
     public static class GetRegionHttpTrigger
     {
-        [FunctionName("Get")]
+        [FunctionName("GetById")]
         [ProducesResponseType(typeof(Models.Region), (int)HttpStatusCode.OK)]
         [Response(HttpStatusCode = (int)HttpStatusCode.OK, Description = "Region found", ShowSchema = true)]
         [Response(HttpStatusCode = (int)HttpStatusCode.NoContent, Description = "Region does not exist", ShowSchema = false)]
         [Response(HttpStatusCode = (int)HttpStatusCode.BadRequest, Description = "Request was malformed", ShowSchema = false)]
-        [Display(Name = "Get", Description = "Ability to retrieve all Regions for the given Path")]
+        [Display(Name = "Get", Description = "Ability to retrieve an individual Region for the given Path")]
         public static async Task<HttpResponseMessage> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "paths/{path}/regions")]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "paths/{path}/regions/{pageRegion}")]
             HttpRequest req,
             ILogger log,
             string path,
+            int pageRegion,
             [Inject] ILoggerHelper loggerHelper,
             [Inject] IHttpRequestHelper httpRequestHelper,
             [Inject] IHttpResponseMessageHelper httpResponseMessageHelper,
-            [Inject] IJsonHelper jsonHelper
+            [Inject] IJsonHelper jsonHelper,
+            [Inject] IRegionService regionService
         )
         {
             loggerHelper.LogMethodEnter(log);
@@ -54,56 +57,38 @@ namespace DFC.Composite.Regions.Functions
 
             if (string.IsNullOrEmpty(path))
             {
-                loggerHelper.LogInformationMessage(log, correlationGuid, $"Missing value in request for '{nameof(path)}");
+                loggerHelper.LogInformationMessage(log, correlationGuid, $"Missing value in request for '{nameof(path)}'");
                 return httpResponseMessageHelper.BadRequest();
             }
 
-            loggerHelper.LogInformationMessage(log, correlationGuid, $"Attempting to get Regions for Path {path}");
-
-
-
-
-
-            //////////////////////////////////////
-            // sample code - to delete vvvvvvvvvvv
-            //////////////////////////////////////
-
-
-
-
-            //string name = req.Query["name"];
-
-            //string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            //dynamic data = JsonConvert.DeserializeObject(requestBody);
-            //name = name ?? data?.name;
-
-            var regions = new List<Models.Region>()
+            if (!Uri.IsWellFormedUriString(path, UriKind.Absolute))
             {
-                new Models.Region()
-                {
-                    Path = path,
-                    PageRegion =  (int)PageRegions.Head
-                },
-                new Models.Region()
-                {
-                    Path = path,
-                    PageRegion =  (int)PageRegions.BodyFooter
-                }
-            };
+                loggerHelper.LogInformationMessage(log, correlationGuid, $"Request value for '{nameof(path)}' is not a valid absolute Uri");
+                return httpResponseMessageHelper.BadRequest();
+            }
 
-            //////////////////////////////////////
-            // sample code - to delete ^^^^^^^^^^^
-            //////////////////////////////////////
+            if (pageRegion == 0 || !Enum.IsDefined(typeof(PageRegions), pageRegion))
+            {
+                loggerHelper.LogInformationMessage(log, correlationGuid, $"Missing/invalid value in request for '{nameof(pageRegion)}'");
+                return httpResponseMessageHelper.BadRequest();
+            }
 
+            PageRegions pageRegionValue = (PageRegions)pageRegion;
 
+            loggerHelper.LogInformationMessage(log, correlationGuid, $"Attempting to get Region {pageRegionValue} for Path {path}");
 
+            var regionModel = await regionService.GetAsync(path, pageRegionValue);
 
-
+            if (regionModel == null)
+            {
+                loggerHelper.LogInformationMessage(log, correlationGuid, $"Region does not exist for {pageRegionValue} for Path {path}");
+                return httpResponseMessageHelper.NoContent();
+            }
 
             loggerHelper.LogMethodExit(log);
 
-            return regions != null
-                ? httpResponseMessageHelper.Ok(jsonHelper.SerializeObjectsAndRenameIdProperty(regions, "id", nameof(Models.Region.DocumentId)))
+            return regionModel != null
+                ? httpResponseMessageHelper.Ok(jsonHelper.SerializeObjectAndRenameIdProperty(regionModel, "id", nameof(Models.Region.DocumentId)))
                 : httpResponseMessageHelper.NoContent();
         }
     }
