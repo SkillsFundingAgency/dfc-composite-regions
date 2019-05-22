@@ -70,23 +70,6 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task GetRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathIsInvalid()
         {
             // arrange
-            const string path = null;
-            const PageRegions pageRegion = PageRegions.Body;
-            const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
-
-            // act
-            var result = await RunFunctionAsync(path, (int)pageRegion);
-
-            // assert
-            Assert.IsInstanceOf<HttpResponseMessage>(result);
-            Assert.AreEqual(expectedHttpStatusCode, result.StatusCode);
-        }
-
-        [Test]
-        [Category("HttpTrigger.Get")]
-        public async Task GetRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenBadPathUrl()
-        {
-            // arrange
             const string path = InvalidPathValue;
             const PageRegions pageRegion = PageRegions.Body;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;

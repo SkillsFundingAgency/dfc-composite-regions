@@ -69,12 +69,6 @@ namespace DFC.Composite.Regions.Functions
                 return httpResponseMessageHelper.BadRequest();
             }
 
-            if (!Uri.IsWellFormedUriString(path, UriKind.Absolute))
-            {
-                loggerHelper.LogInformationMessage(log, correlationGuid, $"Request value for '{nameof(path)}' is not a valid absolute Uri");
-                return httpResponseMessageHelper.BadRequest();
-            }
-
             if (pageRegion == 0 || !Enum.IsDefined(typeof(PageRegions), pageRegion))
             {
                 loggerHelper.LogInformationMessage(log, correlationGuid, $"Missing/invalid value in request for '{nameof(pageRegion)}'");
@@ -107,15 +101,21 @@ namespace DFC.Composite.Regions.Functions
                 return httpResponseMessageHelper.BadRequest();
             }
 
-             if (!Uri.IsWellFormedUriString(regionRequest.Path, UriKind.Absolute))
+            if (path != regionRequest.Path)
             {
-                loggerHelper.LogInformationMessage(log, correlationGuid, $"Request value for '{nameof(regionRequest.Path)}' is not a valid absolute Uri");
+                loggerHelper.LogInformationMessage(log, correlationGuid, $"Request value for '{nameof(regionRequest.Path)}' does not match resource path value");
                 return httpResponseMessageHelper.BadRequest();
             }
 
-           if (path != regionRequest.Path)
+            if (string.IsNullOrEmpty(regionRequest.RegionEndpoint))
             {
-                loggerHelper.LogInformationMessage(log, correlationGuid, $"Request value for '{nameof(regionRequest.Path)}' does not match resource path value");
+                loggerHelper.LogInformationMessage(log, correlationGuid, $"Missing value in request for '{nameof(regionRequest.RegionEndpoint)}'");
+                return httpResponseMessageHelper.BadRequest();
+            }
+
+            if (!Uri.IsWellFormedUriString(regionRequest.RegionEndpoint, UriKind.Absolute))
+            {
+                loggerHelper.LogInformationMessage(log, correlationGuid, $"Request value for '{nameof(regionRequest.RegionEndpoint)}' is not a valid absolute Uri");
                 return httpResponseMessageHelper.BadRequest();
             }
 
@@ -137,7 +137,7 @@ namespace DFC.Composite.Regions.Functions
                     return httpResponseMessageHelper.BadRequest();
                 }
             }
-            
+
             loggerHelper.LogInformationMessage(log, correlationGuid, string.Format("Attempting to update region {0}", regionRequest.DocumentId));
             var replacedRegion = await regionService.ReplaceAsync(regionRequest);
 

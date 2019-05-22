@@ -27,6 +27,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             {
                 Path = path,
                 PageRegion = PageRegions.Body,
+                RegionEndpoint = ValidEndpointValue,
                 OfflineHtml = ValidHtmlFragment
             };
 
@@ -43,7 +44,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task PostRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathIsInvalid()
         {
             // arrange
-            const string path = null;
+            const string path = InvalidPathValue;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
 
             // act
@@ -56,14 +57,46 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
 
         [Test]
         [Category("HttpTrigger.Post")]
-        public async Task PostRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenBadPathUrl()
+        public async Task PostRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenMissingEndpointUrl()
         {
             // arrange
-            const string path = InvalidPathValue;
+            const string path = ValidPathValue;
+            const string endpoint = null;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
+            var regionModel = new Regions.Models.Region()
+            {
+                Path = path,
+                PageRegion = PageRegions.Body,
+                RegionEndpoint= endpoint,
+                OfflineHtml = ValidHtmlFragment
+            };
 
             // act
-            var result = await RunFunctionAsync(path);
+            var result = await RunFunctionAsync(path, regionModel);
+
+            // assert
+            Assert.IsInstanceOf<HttpResponseMessage>(result);
+            Assert.AreEqual(expectedHttpStatusCode, result.StatusCode);
+        }
+
+        [Test]
+        [Category("HttpTrigger.Post")]
+        public async Task PostRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenBadEndpointUrl()
+        {
+            // arrange
+            const string path = ValidPathValue;
+            const string endpoint = InvalidEndpointValue;
+            const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
+            var regionModel = new Regions.Models.Region()
+            {
+                Path = path,
+                PageRegion = PageRegions.Body,
+                RegionEndpoint= endpoint,
+                OfflineHtml = ValidHtmlFragment
+            };
+
+            // act
+            var result = await RunFunctionAsync(path, regionModel);
 
             // assert
             Assert.IsInstanceOf<HttpResponseMessage>(result);
@@ -97,6 +130,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             {
                 Path = path + "XXXX",
                 PageRegion = PageRegions.Body,
+                RegionEndpoint = ValidEndpointValue,
                 OfflineHtml = ValidHtmlFragment
             };
 
@@ -119,6 +153,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             {
                 Path = path,
                 PageRegion = PageRegions.None,
+                RegionEndpoint = ValidEndpointValue,
                 OfflineHtml = ValidHtmlFragment
             };
 
@@ -141,6 +176,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             {
                 Path = path,
                 PageRegion = (PageRegions)(-1),
+                RegionEndpoint = ValidEndpointValue,
                 OfflineHtml = ValidHtmlFragment
             };
 
@@ -163,6 +199,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             {
                 Path = InvalidPathValue,
                 PageRegion = PageRegions.Breadcrumb,
+                RegionEndpoint = ValidEndpointValue,
                 OfflineHtml = ValidHtmlFragment
             };
 
@@ -185,6 +222,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             {
                 Path = path,
                 PageRegion = PageRegions.Body,
+                RegionEndpoint = ValidEndpointValue,
                 OfflineHtml = MalformedHtmlFragment
             };
 

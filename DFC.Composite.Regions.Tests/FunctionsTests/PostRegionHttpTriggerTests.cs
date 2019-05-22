@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -25,7 +24,8 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
             {
                 Path = path,
                 PageRegion = PageRegions.Body,
-                OfflineHtml= ValidHtmlFragment
+                RegionEndpoint = ValidEndpointValue,
+                OfflineHtml = ValidHtmlFragment
             };
 
             _httpRequestHelper.GetResourceFromRequest<Regions.Models.Region>(_request).Returns(Task.FromResult(responseModel).Result);
@@ -47,7 +47,7 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
         public async Task PostRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathIsInvalid()
         {
             // arrange
-            const string path = null;
+            const string path = InvalidPathValue;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
 
             _httpResponseMessageHelper.BadRequest().Returns(x => new HttpResponseMessage(expectedHttpStatusCode));
@@ -88,7 +88,7 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
 
             _httpRequestHelper.GetResourceFromRequest<Regions.Models.Region>(_request).Throws(new JsonException());
 
-            _regionService.CreateAsync(Arg.Any<Regions.Models.Region>()).Returns(Task.FromResult< Regions.Models.Region>(null).Result);
+            _regionService.CreateAsync(Arg.Any<Regions.Models.Region>()).Returns(Task.FromResult<Regions.Models.Region>(null).Result);
 
             _httpResponseMessageHelper.UnprocessableEntity(Arg.Any<JsonException>()).Returns(x => new HttpResponseMessage(expectedHttpStatusCode));
 
@@ -110,7 +110,8 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
             var responseModel = new Regions.Models.Region()
             {
                 Path = path + "XXXX",
-                PageRegion = PageRegions.Body
+                PageRegion = PageRegions.Body,
+                RegionEndpoint = ValidEndpointValue
             };
 
             _httpRequestHelper.GetResourceFromRequest<Regions.Models.Region>(_request).Returns(Task.FromResult(responseModel).Result);
@@ -135,7 +136,8 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
             var responseModel = new Regions.Models.Region()
             {
                 Path = path,
-                PageRegion = PageRegions.None
+                PageRegion = PageRegions.None,
+                RegionEndpoint = ValidEndpointValue
             };
 
             _httpRequestHelper.GetResourceFromRequest<Regions.Models.Region>(_request).Returns(Task.FromResult(responseModel).Result);
@@ -160,7 +162,8 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
             var responseModel = new Regions.Models.Region()
             {
                 Path = path,
-                PageRegion = (PageRegions)(-1)
+                PageRegion = (PageRegions)(-1),
+                RegionEndpoint = ValidEndpointValue
             };
 
             _httpRequestHelper.GetResourceFromRequest<Regions.Models.Region>(_request).Returns(Task.FromResult(responseModel).Result);
@@ -185,7 +188,8 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
             var responseModel = new Regions.Models.Region()
             {
                 Path = InvalidPathValue,
-                PageRegion = PageRegions.Body
+                PageRegion = PageRegions.Body,
+                RegionEndpoint = ValidEndpointValue
             };
 
             _httpRequestHelper.GetResourceFromRequest<Regions.Models.Region>(_request).Returns(Task.FromResult(responseModel).Result);
@@ -213,6 +217,7 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
             {
                 Path = path,
                 PageRegion = PageRegions.Body,
+                RegionEndpoint = ValidEndpointValue,
                 OfflineHtml = MalformedHtmlFragment
             };
 

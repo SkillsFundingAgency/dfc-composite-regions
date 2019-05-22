@@ -26,7 +26,8 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
             {
                 DocumentId = new Guid(),
                 Path = path,
-                PageRegion = PageRegions.Body,
+                PageRegion = pageRegion,
+                RegionEndpoint=ValidEndpointValue,
                 OfflineHtml = ValidHtmlFragment
             };
 
@@ -49,7 +50,7 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
         public async Task PutRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathIsInvalid()
         {
             // arrange
-            const string path = null;
+            const string path = InvalidPathValue;
             const PageRegions pageRegion = PageRegions.Body;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
 
@@ -116,8 +117,9 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
             var responseModel = new Regions.Models.Region()
             {
                 Path = path,
-                PageRegion = PageRegions.Body,
-                OfflineHtml = ValidHtmlFragment
+                PageRegion = pageRegion,
+                OfflineHtml = ValidHtmlFragment,
+                RegionEndpoint = ValidEndpointValue
             };
 
             _httpRequestHelper.GetResourceFromRequest<Regions.Models.Region>(_request).Returns(Task.FromResult(responseModel).Result);
@@ -142,8 +144,10 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var responseModel = new Regions.Models.Region()
             {
+                DocumentId = new Guid(),
                 Path = path + "XXXX",
-                PageRegion = PageRegions.Body
+                PageRegion = pageRegion,
+                RegionEndpoint = ValidEndpointValue
             };
 
             _httpRequestHelper.GetResourceFromRequest<Regions.Models.Region>(_request).Returns(Task.FromResult(responseModel).Result);
@@ -171,6 +175,7 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
                 DocumentId = new Guid(),
                 Path = path,
                 PageRegion = PageRegions.SidebarRight,
+                RegionEndpoint = ValidEndpointValue,
                 OfflineHtml = ValidHtmlFragment
             };
 
@@ -196,8 +201,10 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var responseModel = new Regions.Models.Region()
             {
+                DocumentId = new Guid(),
                 Path = path,
-                PageRegion = PageRegions.None
+                PageRegion = PageRegions.None,
+                RegionEndpoint = ValidEndpointValue
             };
 
             _httpRequestHelper.GetResourceFromRequest<Regions.Models.Region>(_request).Returns(Task.FromResult(responseModel).Result);
@@ -222,8 +229,10 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var responseModel = new Regions.Models.Region()
             {
+                DocumentId = new Guid(),
                 Path = path,
-                PageRegion = pageRegion
+                PageRegion = pageRegion,
+                RegionEndpoint = ValidEndpointValue
             };
 
             _httpRequestHelper.GetResourceFromRequest<Regions.Models.Region>(_request).Returns(Task.FromResult(responseModel).Result);
@@ -248,8 +257,10 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var responseModel = new Regions.Models.Region()
             {
+                DocumentId = new Guid(),
                 Path = InvalidPathValue,
-                PageRegion = PageRegions.Body
+                PageRegion = pageRegion,
+                RegionEndpoint = ValidEndpointValue
             };
 
             _httpRequestHelper.GetResourceFromRequest<Regions.Models.Region>(_request).Returns(Task.FromResult(responseModel).Result);
@@ -276,8 +287,10 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var responseModel = new Regions.Models.Region()
             {
+                DocumentId = new Guid(),
                 Path = path,
-                PageRegion = PageRegions.Body,
+                PageRegion = pageRegion,
+                RegionEndpoint = ValidEndpointValue,
                 OfflineHtml = MalformedHtmlFragment
             };
 

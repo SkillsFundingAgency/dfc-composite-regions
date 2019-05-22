@@ -68,12 +68,6 @@ namespace DFC.Composite.Regions.Functions
                 return httpResponseMessageHelper.BadRequest();
             }
 
-            if (!Uri.IsWellFormedUriString(path, UriKind.Absolute))
-            {
-                loggerHelper.LogInformationMessage(log, correlationGuid, $"Request value for '{nameof(path)}' is not a valid absolute Uri");
-                return httpResponseMessageHelper.BadRequest();
-            }
-
             Models.Region regionRequest;
 
             try
@@ -93,15 +87,21 @@ namespace DFC.Composite.Regions.Functions
                 return httpResponseMessageHelper.UnprocessableEntity(ex);
             }
 
-            if (!Uri.IsWellFormedUriString(regionRequest.Path, UriKind.Absolute))
-            {
-                loggerHelper.LogInformationMessage(log, correlationGuid, $"Request value for '{nameof(regionRequest.Path)}' is not a valid absolute Uri");
-                return httpResponseMessageHelper.BadRequest();
-            }
-
             if (path != regionRequest.Path)
             {
                 loggerHelper.LogInformationMessage(log, correlationGuid, $"Request value for '{nameof(regionRequest.Path)}' does not match resource path value");
+                return httpResponseMessageHelper.BadRequest();
+            }
+
+            if (string.IsNullOrEmpty(regionRequest.RegionEndpoint))
+            {
+                loggerHelper.LogInformationMessage(log, correlationGuid, $"Missing value in request for '{nameof(regionRequest.RegionEndpoint)}'");
+                return httpResponseMessageHelper.BadRequest();
+            }
+
+            if (!Uri.IsWellFormedUriString(regionRequest.RegionEndpoint, UriKind.Absolute))
+            {
+                loggerHelper.LogInformationMessage(log, correlationGuid, $"Request value for '{nameof(regionRequest.RegionEndpoint)}' is not a valid absolute Uri");
                 return httpResponseMessageHelper.BadRequest();
             }
 

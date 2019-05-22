@@ -63,12 +63,6 @@ namespace DFC.Composite.Regions.Functions
                 return httpResponseMessageHelper.BadRequest();
             }
 
-            if (!Uri.IsWellFormedUriString(path, UriKind.Absolute))
-            {
-                loggerHelper.LogInformationMessage(log, correlationGuid, $"Request value for '{nameof(path)}' is not a valid absolute Uri");
-                return httpResponseMessageHelper.BadRequest();
-            }
-
             if (pageRegion == 0 || !Enum.IsDefined(typeof(PageRegions), pageRegion))
             {
                 loggerHelper.LogInformationMessage(log, correlationGuid, $"Missing/invalid value in request for '{nameof(pageRegion)}'");

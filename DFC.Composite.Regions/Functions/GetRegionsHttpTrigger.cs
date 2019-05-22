@@ -61,12 +61,6 @@ namespace DFC.Composite.Regions.Functions
                 return httpResponseMessageHelper.BadRequest();
             }
 
-            if (!Uri.IsWellFormedUriString(path, UriKind.Absolute))
-            {
-                loggerHelper.LogInformationMessage(log, correlationGuid, $"Request value for '{nameof(path)}' is not a valid absolute Uri");
-                return httpResponseMessageHelper.BadRequest();
-            }
-
             loggerHelper.LogInformationMessage(log, correlationGuid, $"Attempting to get Regions for Path {path}'");
 
             var regionModels = await regionService.GetListAsync(path);

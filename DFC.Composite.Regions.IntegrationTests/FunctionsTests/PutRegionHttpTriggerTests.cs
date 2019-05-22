@@ -27,8 +27,10 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.OK;
             var regionModel = new Regions.Models.Region()
             {
+                DocumentId = new Guid(),
                 Path = path,
                 PageRegion = pageRegion,
+                RegionEndpoint = ValidEndpointValue,
                 OfflineHtml = ValidHtmlFragment
             };
             var regionService = serviceProvider.GetService<Services.IRegionService>();
@@ -48,7 +50,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task PutRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathIsInvalid()
         {
             // arrange
-            const string path = null;
+            const string path = InvalidPathValue;
             const PageRegions pageRegion = PageRegions.Body;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
 
@@ -61,16 +63,51 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         }
 
         [Test]
-        [Category("HttpTrigger.Put")]
-        public async Task PutRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenBadPathUrl()
+        [Category("HttpTrigger.Post")]
+        public async Task PostRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenMissingEndpointUrl()
         {
             // arrange
-            const string path = InvalidPathValue;
+            const string path = ValidPathValue;
             const PageRegions pageRegion = PageRegions.Body;
+            const string endpoint = null;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
+            var regionModel = new Regions.Models.Region()
+            {
+                DocumentId = new Guid(),
+                Path = path,
+                PageRegion = pageRegion,
+                RegionEndpoint = endpoint,
+                OfflineHtml = ValidHtmlFragment
+            };
 
             // act
-            var result = await RunFunctionAsync(path, (int)pageRegion);
+            var result = await RunFunctionAsync(path, (int)pageRegion, regionModel);
+
+            // assert
+            Assert.IsInstanceOf<HttpResponseMessage>(result);
+            Assert.AreEqual(expectedHttpStatusCode, result.StatusCode);
+        }
+
+        [Test]
+        [Category("HttpTrigger.Post")]
+        public async Task PostRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenBadEndpointUrl()
+        {
+            // arrange
+            const string path = ValidPathValue;
+            const PageRegions pageRegion = PageRegions.Body;
+            const string endpoint = InvalidEndpointValue;
+            const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
+            var regionModel = new Regions.Models.Region()
+            {
+                DocumentId = new Guid(),
+                Path = path,
+                PageRegion = pageRegion,
+                RegionEndpoint = endpoint,
+                OfflineHtml = ValidHtmlFragment
+            };
+
+            // act
+            var result = await RunFunctionAsync(path, (int)pageRegion, regionModel);
 
             // assert
             Assert.IsInstanceOf<HttpResponseMessage>(result);
@@ -105,7 +142,8 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             var regionModel = new Regions.Models.Region()
             {
                 Path = path,
-                PageRegion = PageRegions.Body,
+                PageRegion = pageRegion,
+                RegionEndpoint = ValidEndpointValue,
                 OfflineHtml = ValidHtmlFragment
             };
 
@@ -129,7 +167,8 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             {
                 DocumentId = new Guid(),
                 Path = ValidPathValue + "XXXX",
-                PageRegion = PageRegions.Body,
+                PageRegion = pageRegion,
+                RegionEndpoint = ValidEndpointValue,
                 OfflineHtml = ValidHtmlFragment
             };
 
@@ -154,6 +193,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
                 DocumentId = new Guid(),
                 Path = path,
                 PageRegion = PageRegions.SidebarRight,
+                RegionEndpoint = ValidEndpointValue,
                 OfflineHtml = ValidHtmlFragment
             };
 
@@ -212,6 +252,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
                 DocumentId = new Guid(),
                 Path = InvalidPathValue,
                 PageRegion = PageRegions.Body,
+                RegionEndpoint = ValidEndpointValue,
                 OfflineHtml = ValidHtmlFragment
             };
 
@@ -235,7 +276,8 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             {
                 DocumentId = new Guid(),
                 Path = path,
-                PageRegion = PageRegions.Body,
+                PageRegion = pageRegion,
+                RegionEndpoint = ValidEndpointValue,
                 OfflineHtml = MalformedHtmlFragment
             };
 

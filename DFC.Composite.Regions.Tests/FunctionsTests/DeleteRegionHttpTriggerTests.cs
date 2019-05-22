@@ -64,25 +64,6 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
         public async Task DeleteRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathIsInvalid()
         {
             // arrange
-            const string path = null;
-            const PageRegions pageRegion = PageRegions.Body;
-            const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
-
-            _httpResponseMessageHelper.BadRequest().Returns(x => new HttpResponseMessage(expectedHttpStatusCode));
-
-            // act
-            var result = await RunFunctionAsync(path, (int)pageRegion);
-
-            // assert
-            Assert.IsInstanceOf<HttpResponseMessage>(result);
-            Assert.AreEqual(expectedHttpStatusCode, result.StatusCode);
-        }
-
-        [Test]
-        [Category("HttpTrigger.Delete")]
-        public async Task DeleteRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenBadPathUrl()
-        {
-            // arrange
             const string path = InvalidPathValue;
             const PageRegions pageRegion = PageRegions.Body;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
