@@ -63,6 +63,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             Environment.SetEnvironmentVariable(Regions.Models.EnvironmentVariableNames.RegionConnectionString, $"AccountEndpoint={appRegistrationConfiguration.Endpoint};AccountKey={appRegistrationConfiguration.Key}");
             Environment.SetEnvironmentVariable(Regions.Models.EnvironmentVariableNames.CosmosDatabaseId, appRegistrationConfiguration.DatabaseId);
             Environment.SetEnvironmentVariable(Regions.Models.EnvironmentVariableNames.CosmosCollectionId, appRegistrationConfiguration.CollectionId);
+            Environment.SetEnvironmentVariable(Regions.Models.EnvironmentVariableNames.CosmosPartitionKey, appRegistrationConfiguration.PartitionKey);
         }
 
         [TearDown]

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 
 namespace DFC.Composite.Regions.Cosmos.Client
@@ -10,6 +12,7 @@ namespace DFC.Composite.Regions.Cosmos.Client
         private static string _connectionString;
         private static string _databaseId;
         private static string _collectionId;
+        private static string _partitionKey;
 
         public static DocumentClient CreateDocumentClient()
         {
@@ -21,6 +24,7 @@ namespace DFC.Composite.Regions.Cosmos.Client
             _connectionString = Environment.GetEnvironmentVariable(Models.EnvironmentVariableNames.RegionConnectionString);
             _databaseId = Environment.GetEnvironmentVariable(Models.EnvironmentVariableNames.CosmosDatabaseId);
             _collectionId = Environment.GetEnvironmentVariable(Models.EnvironmentVariableNames.CosmosCollectionId);
+            _partitionKey = Environment.GetEnvironmentVariable(Models.EnvironmentVariableNames.CosmosPartitionKey);
 
             _documentClient = InitialiseDocumentClient();
 
@@ -32,7 +36,7 @@ namespace DFC.Composite.Regions.Cosmos.Client
 
         private static DocumentClient InitialiseDocumentClient()
         {
-                        if (string.IsNullOrWhiteSpace(_connectionString))
+            if (string.IsNullOrWhiteSpace(_connectionString))
             {
                 throw new ArgumentNullException();
             }
@@ -87,9 +91,15 @@ namespace DFC.Composite.Regions.Cosmos.Client
             {
                 if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
+
+                    var pkDef = new PartitionKeyDefinition
+                    {
+                        Paths = new Collection<string>() { _partitionKey }
+                    };
+
                     await _documentClient.CreateDocumentCollectionAsync(
                         UriFactory.CreateDatabaseUri(_databaseId),
-                        new Microsoft.Azure.Documents.DocumentCollection { Id = _collectionId },
+                        new Microsoft.Azure.Documents.DocumentCollection { Id = _collectionId, PartitionKey = pkDef },
                         new RequestOptions { OfferThroughput = 1000 });
                 }
                 else

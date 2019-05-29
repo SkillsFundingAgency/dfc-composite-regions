@@ -9,5 +9,6 @@ namespace DFC.Composite.Regions.Models
         public const string RegionConnectionString = "RegionConnectionString";
         public const string CosmosDatabaseId = "DatabaseId";
         public const string CosmosCollectionId = "CollectionId";
+        public const string CosmosPartitionKey = "PartitionKey";
     }
 }

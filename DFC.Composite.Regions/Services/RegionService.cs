@@ -1,9 +1,9 @@
-﻿using System;
+﻿using DFC.Composite.Regions.Cosmos.Provider;
+using DFC.Composite.Regions.Models;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using DFC.Composite.Regions.Cosmos.Provider;
-using DFC.Composite.Regions.Models;
 
 namespace DFC.Composite.Regions.Services
 {

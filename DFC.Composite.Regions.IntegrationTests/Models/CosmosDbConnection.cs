@@ -28,5 +28,10 @@ namespace DFC.Composite.Regions.IntegrationTests.Models
         /// Cosmos DB - Collection Id
         /// </summary>
         public string CollectionId { get; set; }
+
+        /// <summary>
+        /// Cosmos DB - Partition Key
+        /// </summary>
+        public string PartitionKey { get; set; }
     }
 }
