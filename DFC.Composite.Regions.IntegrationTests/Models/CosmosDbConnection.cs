@@ -10,14 +10,9 @@ namespace DFC.Composite.Regions.IntegrationTests.Models
     public class CosmosDbConnection
     {
         /// <summary>
-        /// Cosmos DB - Endpoint
+        /// Cosmos DB - Connection string
         /// </summary>
-        public string Endpoint { get; set; }
-
-        /// <summary>
-        /// Cosmos DB - Key
-        /// </summary>
-        public string Key { get; set; }
+        public string ConnectionString { get; set; }
 
         /// <summary>
         /// Cosmos DB - Database Id

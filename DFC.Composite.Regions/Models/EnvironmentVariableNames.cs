@@ -6,9 +6,9 @@ namespace DFC.Composite.Regions.Models
 {
     public static class EnvironmentVariableNames
     {
-        public const string RegionConnectionString = "RegionConnectionString";
-        public const string CosmosDatabaseId = "DatabaseId";
-        public const string CosmosCollectionId = "CollectionId";
-        public const string CosmosPartitionKey = "PartitionKey";
+        public const string CosmosConnectionString = "CosmosConnectionString";
+        public const string CosmosDatabaseId = "CosmosDatabaseId";
+        public const string CosmosCollectionId = "CosmosCollectionId";
+        public const string CosmosPartitionKey = "CosmosPartitionKey";
     }
 }

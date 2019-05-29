@@ -21,7 +21,7 @@ namespace DFC.Composite.Regions.Cosmos.Client
                 return _documentClient;
             }
 
-            _connectionString = Environment.GetEnvironmentVariable(Models.EnvironmentVariableNames.RegionConnectionString);
+            _connectionString = Environment.GetEnvironmentVariable(Models.EnvironmentVariableNames.CosmosConnectionString);
             _databaseId = Environment.GetEnvironmentVariable(Models.EnvironmentVariableNames.CosmosDatabaseId);
             _collectionId = Environment.GetEnvironmentVariable(Models.EnvironmentVariableNames.CosmosCollectionId);
             _partitionKey = Environment.GetEnvironmentVariable(Models.EnvironmentVariableNames.CosmosPartitionKey);

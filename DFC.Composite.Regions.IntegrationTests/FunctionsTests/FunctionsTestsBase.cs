@@ -36,8 +36,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             var services = new ServiceCollection();
 
             IConfiguration configuration = new ConfigurationBuilder()
-                .SetBasePath(@"D:\Source\Repos\SkillsFundingAgency\AppSettings")
-                .AddJsonFile("CosmosDbTests.appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
 
             services.AddSingleton<IConfiguration>(configuration);
@@ -60,7 +59,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             serviceProvider = services.BuildServiceProvider();
 
             // set the environment variables
-            Environment.SetEnvironmentVariable(Regions.Models.EnvironmentVariableNames.RegionConnectionString, $"AccountEndpoint={appRegistrationConfiguration.Endpoint};AccountKey={appRegistrationConfiguration.Key}");
+            Environment.SetEnvironmentVariable(Regions.Models.EnvironmentVariableNames.CosmosConnectionString, appRegistrationConfiguration.ConnectionString);
             Environment.SetEnvironmentVariable(Regions.Models.EnvironmentVariableNames.CosmosDatabaseId, appRegistrationConfiguration.DatabaseId);
             Environment.SetEnvironmentVariable(Regions.Models.EnvironmentVariableNames.CosmosCollectionId, appRegistrationConfiguration.CollectionId);
             Environment.SetEnvironmentVariable(Regions.Models.EnvironmentVariableNames.CosmosPartitionKey, appRegistrationConfiguration.PartitionKey);
