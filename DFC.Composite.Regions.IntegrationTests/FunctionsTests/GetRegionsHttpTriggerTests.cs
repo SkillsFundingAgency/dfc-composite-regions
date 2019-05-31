@@ -24,7 +24,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task GetRegionsHttpTrigger_ReturnsStatusCodeOk_WhenRegionsExist()
         {
             // arrange
-            const string path = ValidPathValue + "GetList";
+            const string path = ValidPathValue + "GetList2";
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.OK;
             var regionModels = new List<Region>() {
                 new Region() {

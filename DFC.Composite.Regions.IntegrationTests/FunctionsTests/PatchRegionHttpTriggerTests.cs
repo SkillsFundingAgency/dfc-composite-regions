@@ -71,7 +71,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             _ = await regionService.CreateAsync(regionModel);
 
             // act
-            var result = await RunFunctionAsync(path, (int)pageRegion);
+            var result = await RunFunctionAsync(path, (int)pageRegion, null);
 
             // assert
             Assert.IsInstanceOf<HttpResponseMessage>(result);
@@ -86,9 +86,13 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             const string path = ValidPathValue + "Patch";
             const PageRegions pageRegion = PageRegions.SidebarLeft;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.NoContent;
+            var regionPatchModel = new RegionPatch()
+            {
+                IsHealthy = false
+            };
 
             // act
-            var result = await RunFunctionAsync(path, (int)pageRegion);
+            var result = await RunFunctionAsync(path, (int)pageRegion, regionPatchModel);
 
             // assert
             Assert.IsInstanceOf<HttpResponseMessage>(result);
@@ -103,9 +107,13 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             const string path = InvalidPathValue;
             const PageRegions pageRegion = PageRegions.Body;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
+            var regionPatchModel = new RegionPatch()
+            {
+                IsHealthy = false
+            };
 
             // act
-            var result = await RunFunctionAsync(path, (int)pageRegion);
+            var result = await RunFunctionAsync(path, (int)pageRegion, regionPatchModel);
 
             // assert
             Assert.IsInstanceOf<HttpResponseMessage>(result);
@@ -120,9 +128,13 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             const string path = ValidPathValue + "Patch";
             const PageRegions pageRegion = PageRegions.None;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
+            var regionPatchModel = new RegionPatch()
+            {
+                IsHealthy = false
+            };
 
             // act
-            var result = await RunFunctionAsync(path, (int)pageRegion);
+            var result = await RunFunctionAsync(path, (int)pageRegion, regionPatchModel);
 
             // assert
             Assert.IsInstanceOf<HttpResponseMessage>(result);
@@ -137,9 +149,13 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             const string path = ValidPathValue + "Patch";
             const int pageRegion = -1;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
+            var regionPatchModel = new RegionPatch()
+            {
+                IsHealthy = false
+            };
 
             // act
-            var result = await RunFunctionAsync(path, pageRegion);
+            var result = await RunFunctionAsync(path, (int)pageRegion, regionPatchModel);
 
             // assert
             Assert.IsInstanceOf<HttpResponseMessage>(result);
@@ -147,31 +163,6 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         }
 
         #region function runner method
-
-        private async Task<HttpResponseMessage> RunFunctionAsync(string path, int pageRegion)
-        {
-            var request = serviceProvider.GetService<DefaultHttpRequest>();
-            var log = serviceProvider.GetService<ILogger>();
-            var loggerHelper = serviceProvider.GetService<ILoggerHelper>();
-            var httpRequestHelper = serviceProvider.GetService<IHttpRequestHelper>();
-            var httpResponseMessageHelper = serviceProvider.GetService<IHttpResponseMessageHelper>();
-            var jsonHelper = serviceProvider.GetService<IJsonHelper>();
-            var regionService = serviceProvider.GetService<Services.IRegionService>();
-
-            var response = await Functions.PatchRegionHttpTrigger.Run(
-                                                                        request,
-                                                                        log,
-                                                                        path,
-                                                                        pageRegion,
-                                                                        loggerHelper,
-                                                                        httpRequestHelper,
-                                                                        httpResponseMessageHelper,
-                                                                        jsonHelper,
-                                                                        regionService
-                                                                    ).ConfigureAwait(false);
-
-            return response;
-        }
 
         private async Task<HttpResponseMessage> RunFunctionAsync(string path, int pageRegion, RegionPatch regionPatchModel)
         {
