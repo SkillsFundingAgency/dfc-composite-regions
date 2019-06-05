@@ -26,6 +26,9 @@
         "AspTier": {
             "value": "__AspTier__"
         },
+        "ApiName": {
+            "value": "__ApiName__"
+        },
         "CompositeUiSharedResourceGroup": {
             "value": "__CompositeUiSharedResourceGroup__"
         },
