@@ -14,10 +14,7 @@
         "ApimServiceName": {
             "type": "string"
         },
-        "CompositeUiSharedResourceGroup": {
-            "type": "string"
-        },
-        "CompositeUiSharedStorageAccountName": {
+        "ApiName": {
             "type": "string"
         },
         "AseHostingEnvironmentName": {
@@ -36,6 +33,12 @@
             "type": "string",
             "defaultValue": ""
         },
+        "CompositeUiSharedResourceGroup": {
+            "type": "string"
+        },
+        "CompositeUiSharedStorageAccountName": {
+            "type": "string"
+        },
         "CosmosDbAccount": {
             "type": "string"
         },
@@ -52,7 +55,7 @@
         }
     },
     "variables": {
-        "ApiName": "[concat(parameters('ApimProductInstanceName'), '-regions')]",
+        "ApiName": "[concat(parameters('ApimProductInstanceName'), '-', parameters('ApiName'))]",
         "AppServiceAppInsightsName": "[concat(variables('ResourcePrefix'), '-ai')]",
         "AppServicePlanName": "[if(greater(length(parameters('SharedAppServicePlanName')), 0), parameters('SharedAppServicePlanName'), concat(variables('ResourcePrefix'), '-asp'))]",
         "AppServicePlanResourceGroup": "[if(greater(length(parameters('SharedAppServicePlanResourceGroup')), 0), parameters('SharedAppServicePlanResourceGroup'), resourceGroup().name)]",
