@@ -24,7 +24,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task DeleteRegionHttpTrigger_ReturnsStatusCodeOk_WhenRegionExists()
         {
             // arrange
-            const string path = ValidPathValue + "Delete";
+            const string path = ValidPathValue + "_Delete";
             const PageRegions pageRegion = PageRegions.Body;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.OK;
             var regionModel = new Region()
@@ -63,10 +63,10 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
 
         [Test]
         [Category("HttpTrigger.Delete")]
-        public async Task DeleteRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathIsInvalid()
+        public async Task DeleteRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathIsNull()
         {
             // arrange
-            const string path = InvalidPathValue;
+            const string path = NullPathValue;
             const PageRegions pageRegion = PageRegions.Body;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
 

@@ -19,7 +19,7 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
         public async Task PatchRegionHttpTrigger_ReturnsStatusCodeOk_WhenRegionExists()
         {
             // arrange
-            const string path = ValidPathValue + "Patch";
+            const string path = ValidPathValue + "_Patch";
             const PageRegions pageRegion = PageRegions.Body;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.OK;
             var responseModel = new Regions.Models.Region()
@@ -47,7 +47,7 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
         public async Task PatchRegionHttpTrigger_ReturnsStatusCodeUnprocessableEntity_WhenMissingBody()
         {
             // arrange
-            const string path = ValidPathValue + "Patch";
+            const string path = ValidPathValue + "_Patch";
             const PageRegions pageRegion = PageRegions.Body;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.UnprocessableEntity;
             var responseModel = new Regions.Models.Region()
@@ -93,10 +93,10 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
 
         [Test]
         [Category("HttpTrigger.Patch")]
-        public async Task PatchRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathIsInvalid()
+        public async Task PatchRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathIsNull()
         {
             // arrange
-            const string path = InvalidPathValue;
+            const string path = NullPathValue;
             const PageRegions pageRegion = PageRegions.Body;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
 
@@ -115,7 +115,7 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
         public async Task PatchRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPageRegionIsNone()
         {
             // arrange
-            const string path = ValidPathValue + "Patch";
+            const string path = ValidPathValue + "_Patch";
             const PageRegions pageRegion = PageRegions.None;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
 
@@ -134,7 +134,7 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
         public async Task PatchRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPageRegionIsInvalid()
         {
             // arrange
-            const string path = ValidPathValue + "Patch";
+            const string path = ValidPathValue + "_Patch";
             const int pageRegion = -1;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
 

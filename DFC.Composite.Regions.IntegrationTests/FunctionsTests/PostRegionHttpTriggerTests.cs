@@ -21,8 +21,31 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task PostRegionHttpTrigger_ReturnsStatusCodeOk_ForNewRegion()
         {
             // arrange
-            const string path = ValidPathValue + "Post";
+            const string path = ValidPathValue + "_Post";
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.OK;
+            var regionModel = new Regions.Models.Region()
+            {
+                Path = path,
+                PageRegion = PageRegions.Body,
+                RegionEndpoint = ValidEndpointValue,
+                OfflineHtml = ValidHtmlFragment
+            };
+
+            // act
+            var result = await RunFunctionAsync(path, regionModel);
+
+            // assert
+            Assert.IsInstanceOf<HttpResponseMessage>(result);
+            Assert.AreEqual(expectedHttpStatusCode, result.StatusCode);
+        }
+
+        [Test]
+        [Category("HttpTrigger.Post")]
+        public async Task PostRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathIsNull()
+        {
+            // arrange
+            const string path = NullPathValue;
+            const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var regionModel = new Regions.Models.Region()
             {
                 Path = path,
@@ -115,7 +138,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task PostRegionHttpTrigger_ReturnsStatusCodeUnprocessableEntity_WhenMissingBody()
         {
             // arrange
-            const string path = ValidPathValue + "Post";
+            const string path = ValidPathValue + "_Post";
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.UnprocessableEntity;
 
             // act
@@ -131,7 +154,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task PostRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathDoesNotMatchRoute()
         {
             // arrange
-            const string path = ValidPathValue + "Post";
+            const string path = ValidPathValue + "_Post";
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var regionModel = new Regions.Models.Region()
             {
@@ -154,7 +177,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task PostRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPageRegionIsNone()
         {
             // arrange
-            const string path = ValidPathValue + "Post";
+            const string path = ValidPathValue + "_Post";
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var regionModel = new Regions.Models.Region()
             {
@@ -177,7 +200,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task PostRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPageRegionIsInvalid()
         {
             // arrange
-            const string path = ValidPathValue + "Post";
+            const string path = ValidPathValue + "_Post";
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var regionModel = new Regions.Models.Region()
             {
@@ -200,11 +223,11 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task PostRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenBadPathUrlInBody()
         {
             // arrange
-            const string path = ValidPathValue + "Post";
+            const string path = ValidPathValue + "_Post";
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var regionModel = new Regions.Models.Region()
             {
-                Path = InvalidPathValue,
+                Path = NullPathValue,
                 PageRegion = PageRegions.Breadcrumb,
                 RegionEndpoint = ValidEndpointValue,
                 OfflineHtml = ValidHtmlFragment
@@ -223,7 +246,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task PostRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenMalformedHtml()
         {
             // arrange
-            const string path = ValidPathValue + "Post";
+            const string path = ValidPathValue + "_Post";
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var regionModel = new Regions.Models.Region()
             {

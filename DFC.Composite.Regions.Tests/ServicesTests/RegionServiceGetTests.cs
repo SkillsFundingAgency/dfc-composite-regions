@@ -16,7 +16,7 @@ namespace DFC.Composite.Regions.Tests.ServicesTests
         public async Task GetAsyncTest()
         {
             // arrange
-            const string path = ValidPathValue + "Get";
+            const string path = ValidPathValue + "_Get";
             const PageRegions pageRegion = PageRegions.Body;
             var regionModel = new Region()
             {

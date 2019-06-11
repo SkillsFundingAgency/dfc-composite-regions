@@ -24,7 +24,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task PatchRegionHttpTrigger_ReturnsStatusCodeOk_WhenRegionExists()
         {
             // arrange
-            const string path = ValidPathValue + "Patch";
+            const string path = ValidPathValue + "_Patch";
             const PageRegions pageRegion = PageRegions.Body;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.OK;
             var regionModel = new Region()
@@ -58,7 +58,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task PatchRegionHttpTrigger_ReturnsStatusCodeUnprocessableEntity_WhenMissingBody()
         {
             // arrange
-            const string path = ValidPathValue + "Patch";
+            const string path = ValidPathValue + "_Patch";
             const PageRegions pageRegion = PageRegions.Breadcrumb;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.UnprocessableEntity;
             var regionModel = new Region()
@@ -83,7 +83,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task PatchRegionHttpTrigger_ReturnsStatusCodeNoContent_WhenRegionDoesNotExist()
         {
             // arrange
-            const string path = ValidPathValue + "Patch";
+            const string path = ValidPathValue + "_Patch";
             const PageRegions pageRegion = PageRegions.SidebarLeft;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.NoContent;
             var regionPatchModel = new RegionPatch()
@@ -101,10 +101,10 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
 
         [Test]
         [Category("HttpTrigger.Patch")]
-        public async Task PatchRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathIsInvalid()
+        public async Task PatchRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathIsNull()
         {
             // arrange
-            const string path = InvalidPathValue;
+            const string path = NullPathValue;
             const PageRegions pageRegion = PageRegions.Body;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var regionPatchModel = new RegionPatch()
@@ -125,7 +125,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task PatchRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPageRegionIsNone()
         {
             // arrange
-            const string path = ValidPathValue + "Patch";
+            const string path = ValidPathValue + "_Patch";
             const PageRegions pageRegion = PageRegions.None;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var regionPatchModel = new RegionPatch()
@@ -146,7 +146,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task PatchRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPageRegionIsInvalid()
         {
             // arrange
-            const string path = ValidPathValue + "Patch";
+            const string path = ValidPathValue + "_Patch";
             const int pageRegion = -1;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var regionPatchModel = new RegionPatch()

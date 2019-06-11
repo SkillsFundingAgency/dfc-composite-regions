@@ -16,7 +16,7 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
         public async Task GetRegionsHttpTrigger_ReturnsStatusCodeOk_WhenRegionsExist()
         {
             // arrange
-            const string path = ValidPathValue + "GetList";
+            const string path = ValidPathValue + "_GetList";
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.OK;
             var responseModels = new List<Regions.Models.Region>(){
                 new Regions.Models.Region(),
@@ -40,7 +40,7 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
         public async Task GetRegionsHttpTrigger_ReturnsStatusCodeNoContent_WhenNoRegionsExist()
         {
             // arrange
-            const string path = ValidPathValue + "GetList";
+            const string path = ValidPathValue + "_GetList";
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.NoContent;
 
             _httpResponseMessageHelper.NoContent().Returns(x => new HttpResponseMessage(expectedHttpStatusCode));
@@ -55,10 +55,10 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
 
         [Test]
         [Category("HttpTrigger.GetList")]
-        public async Task GetRegionsHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathIsInvalid()
+        public async Task GetRegionsHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathIsNull()
         {
             // arrange
-            const string path = InvalidPathValue;
+            const string path = NullPathValue;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
 
             _httpResponseMessageHelper.BadRequest().Returns(x => new HttpResponseMessage(expectedHttpStatusCode));

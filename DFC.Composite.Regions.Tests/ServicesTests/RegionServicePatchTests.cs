@@ -18,7 +18,7 @@ namespace DFC.Composite.Regions.Tests.ServicesTests
         public async Task PatchAsyncTest()
         {
             // arrange
-            const string path = ValidPathValue + "Patch";
+            const string path = ValidPathValue + "_Patch";
             const PageRegions pageRegion = PageRegions.Body;
             var regionModel = new Region()
             {

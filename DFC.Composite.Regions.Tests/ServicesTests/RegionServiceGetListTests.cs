@@ -18,7 +18,7 @@ namespace DFC.Composite.Regions.Tests.ServicesTests
         public async Task GetListAsyncTest_ReturnsSuccess_WhenRegionsExist()
         {
             // arrange
-            const string path = ValidPathValue + "GetList";
+            const string path = ValidPathValue + "_GetList";
             var regionModels = new List<Region>() {
                 new Region() {
                     Path = path,

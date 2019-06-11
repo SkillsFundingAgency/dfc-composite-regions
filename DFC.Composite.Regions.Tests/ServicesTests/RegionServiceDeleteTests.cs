@@ -18,7 +18,7 @@ namespace DFC.Composite.Regions.Tests.ServicesTests
         public async Task DeleteAsyncTest()
         {
             // arrange
-            const string path = ValidPathValue + "Delete";
+            const string path = ValidPathValue + "_Delete";
             const PageRegions pageRegion = PageRegions.Body;
             var regionModel = new Region()
             {

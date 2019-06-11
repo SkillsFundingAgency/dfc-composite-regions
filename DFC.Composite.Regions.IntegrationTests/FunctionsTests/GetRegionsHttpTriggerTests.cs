@@ -24,7 +24,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task GetRegionsHttpTrigger_ReturnsStatusCodeOk_WhenRegionsExist()
         {
             // arrange
-            const string path = ValidPathValue + "GetList2";
+            const string path = ValidPathValue + "_GetList2";
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.OK;
             var regionModels = new List<Region>() {
                 new Region() {
@@ -74,10 +74,10 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
 
         [Test]
         [Category("HttpTrigger.GetList")]
-        public async Task GetRegionsHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathIsInvalid()
+        public async Task GetRegionsHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathIsNull()
         {
             // arrange
-            const string path = InvalidPathValue;
+            const string path = NullPathValue;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
 
             // act

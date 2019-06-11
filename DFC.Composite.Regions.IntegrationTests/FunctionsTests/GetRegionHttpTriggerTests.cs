@@ -24,7 +24,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task GetRegionHttpTrigger_ReturnsStatusCodeOk_WhenRegionExists()
         {
             // arrange
-            const string path = ValidPathValue + "Get";
+            const string path = ValidPathValue + "_Get";
             const PageRegions pageRegion = PageRegions.Body;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.OK;
             var regionModel = new Region()
@@ -67,10 +67,10 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
 
         [Test]
         [Category("HttpTrigger.Get")]
-        public async Task GetRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathIsInvalid()
+        public async Task GetRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathIsNull()
         {
             // arrange
-            const string path = InvalidPathValue;
+            const string path = NullPathValue;
             const PageRegions pageRegion = PageRegions.Body;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
 
@@ -87,7 +87,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task GetRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPageRegionIsNone()
         {
             // arrange
-            const string path = ValidPathValue + "Get";
+            const string path = ValidPathValue + "_Get";
             const PageRegions pageRegion = PageRegions.None;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
 
@@ -104,7 +104,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task GetRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPageRegionIsInvalid()
         {
             // arrange
-            const string path = ValidPathValue + "Get";
+            const string path = ValidPathValue + "_Get";
             const int pageRegion = -1;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
 

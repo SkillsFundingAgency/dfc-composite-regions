@@ -22,7 +22,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task PutRegionHttpTrigger_ReturnsStatusCodeOk_ForUpdatedRegion()
         {
             // arrange
-            const string path = ValidPathValue + "Put";
+            const string path = ValidPathValue + "_Put";
             const PageRegions pageRegion = PageRegions.Body;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.OK;
             var regionModel = new Regions.Models.Region()
@@ -47,7 +47,33 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
 
         [Test]
         [Category("HttpTrigger.Put")]
-        public async Task PutRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathIsInvalid()
+        public async Task PutRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathIsNull()
+        {
+            // arrange
+            const string path = NullPathValue;
+            const PageRegions pageRegion = PageRegions.Body;
+            const string endpoint = ValidEndpointValue;
+            const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
+            var regionModel = new Regions.Models.Region()
+            {
+                DocumentId = new Guid(),
+                Path = path,
+                PageRegion = pageRegion,
+                RegionEndpoint = endpoint,
+                OfflineHtml = ValidHtmlFragment
+            };
+
+            // act
+            var result = await RunFunctionAsync(path, (int)pageRegion, regionModel);
+
+            // assert
+            Assert.IsInstanceOf<HttpResponseMessage>(result);
+            Assert.AreEqual(expectedHttpStatusCode, result.StatusCode);
+        }
+
+        [Test]
+        [Category("HttpTrigger.Put")]
+        public async Task PutRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathIsInvalid ()
         {
             // arrange
             const string path = InvalidPathValue;
@@ -128,7 +154,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task PutRegionHttpTrigger_ReturnsStatusCodeUnprocessableEntity_WhenMissingBody()
         {
             // arrange
-            const string path = ValidPathValue + "Put";
+            const string path = ValidPathValue + "_Put";
             const PageRegions pageRegion = PageRegions.Body;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.UnprocessableEntity;
 
@@ -145,7 +171,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task PutRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenDocumemntIdIsMissing()
         {
             // arrange
-            const string path = ValidPathValue + "Put";
+            const string path = ValidPathValue + "_Put";
             const PageRegions pageRegion = PageRegions.Body;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var regionModel = new Regions.Models.Region()
@@ -169,13 +195,13 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task PutRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathDoesNotMatchRoute()
         {
             // arrange
-            const string path = ValidPathValue + "Put";
+            const string path = ValidPathValue + "_Put";
             const PageRegions pageRegion = PageRegions.Body;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var regionModel = new Regions.Models.Region()
             {
                 DocumentId = new Guid(),
-                Path = ValidPathValue + "XXXX",
+                Path = ValidPathValue + "_XXXX",
                 PageRegion = pageRegion,
                 RegionEndpoint = ValidEndpointValue,
                 OfflineHtml = ValidHtmlFragment
@@ -194,7 +220,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task PutRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPageRegionDoesNotMatchRoute()
         {
             // arrange
-            const string path = ValidPathValue + "Put";
+            const string path = ValidPathValue + "_Put";
             const PageRegions pageRegion = PageRegions.Body;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var regionModel = new Regions.Models.Region()
@@ -219,7 +245,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task PutRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPageRegionIsNone()
         {
             // arrange
-            const string path = ValidPathValue + "Put";
+            const string path = ValidPathValue + "_Put";
             const PageRegions pageRegion = PageRegions.None;
             const string endpoint = ValidEndpointValue;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
@@ -245,7 +271,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task PutRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPageRegionIsInvalid()
         {
             // arrange
-            const string path = ValidPathValue + "Put";
+            const string path = ValidPathValue + "_Put";
             const PageRegions pageRegion = (PageRegions)(-1);
             const string endpoint = ValidEndpointValue;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
@@ -271,13 +297,13 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task PutRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenBadPathUrlInBody()
         {
             // arrange
-            const string path = ValidPathValue + "Put";
+            const string path = ValidPathValue + "_Put";
             const PageRegions pageRegion = PageRegions.Body;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var regionModel = new Regions.Models.Region()
             {
                 DocumentId = new Guid(),
-                Path = InvalidPathValue,
+                Path = NullPathValue,
                 PageRegion = PageRegions.Body,
                 RegionEndpoint = ValidEndpointValue,
                 OfflineHtml = ValidHtmlFragment
@@ -296,7 +322,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
         public async Task PutRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenMalformedHtml()
         {
             // arrange
-            const string path = ValidPathValue + "Put";
+            const string path = ValidPathValue + "_Put";
             const PageRegions pageRegion = PageRegions.Body;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var regionModel = new Regions.Models.Region()

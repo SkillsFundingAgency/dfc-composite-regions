@@ -17,9 +17,10 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
     [TestFixture]
     public class FunctionsTestsBase
     {
-        protected const string ValidPathValue = "unittests";
-        protected const string ValidPathNoContentValue = "unittests/XXXX";
-        protected const string InvalidPathValue = null;
+        protected const string ValidPathValue = "unit_tests";
+        protected const string ValidPathNoContentValue = "unit_tests/XXXX";
+        protected const string NullPathValue = null;
+        protected const string InvalidPathValue = "unit tests";
         protected const string ValidHtmlFragment = "<H1>Service Unavailable</H1>";
         protected const string MalformedHtmlFragment = "<H1>Service <B>Malformed";
         protected const string ValidEndpointValue = "https://nationalcareersservice.direct.gov.uk/regions/unittests/";

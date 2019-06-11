@@ -18,7 +18,7 @@ namespace DFC.Composite.Regions.Tests.ServicesTests
         public async Task CreateAsyncTest()
         {
             // arrange
-            const string path = ValidPathValue + "Create";
+            const string path = ValidPathValue + "_Create";
             const PageRegions pageRegion = PageRegions.Body;
             var regionModel = new Region()
             {

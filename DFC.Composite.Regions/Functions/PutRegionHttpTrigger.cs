@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using DFC.Common.Standard.Logging;
 using DFC.Composite.Regions.Services;
@@ -66,6 +67,14 @@ namespace DFC.Composite.Regions.Functions
             if (string.IsNullOrEmpty(path))
             {
                 loggerHelper.LogInformationMessage(log, correlationGuid, $"Missing value in request for '{nameof(path)}'");
+                return httpResponseMessageHelper.BadRequest();
+            }
+
+            var pathRegex = new Regex(@"^[A-Za-z0-9.,-_]*$");
+
+            if (path.Length > 100 || !pathRegex.IsMatch(path))
+            {
+                loggerHelper.LogInformationMessage(log, correlationGuid, $"Invalid value in request for '{nameof(path)}'");
                 return httpResponseMessageHelper.BadRequest();
             }
 
