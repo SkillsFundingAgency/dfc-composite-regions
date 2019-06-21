@@ -41,6 +41,29 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
 
         [Test]
         [Category("HttpTrigger.Post")]
+        public async Task PostRegionHttpTrigger_ReturnsStatusCodeOk_ForNewRegionWithPlaceHolder()
+        {
+            // arrange
+            const string path = ValidPathValue + "_Post_WithPlaceHolder";
+            const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.OK;
+            var regionModel = new Regions.Models.Region()
+            {
+                Path = path,
+                PageRegion = PageRegions.Body,
+                RegionEndpoint = ValidEndpointValueWithPlaceHolder,
+                OfflineHtml = ValidHtmlFragment
+            };
+
+            // act
+            var result = await RunFunctionAsync(path, regionModel);
+
+            // assert
+            Assert.IsInstanceOf<HttpResponseMessage>(result);
+            Assert.AreEqual(expectedHttpStatusCode, result.StatusCode);
+        }
+
+        [Test]
+        [Category("HttpTrigger.Post")]
         public async Task PostRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathIsNull()
         {
             // arrange

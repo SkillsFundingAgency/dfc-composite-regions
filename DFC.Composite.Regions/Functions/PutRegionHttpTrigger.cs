@@ -122,7 +122,16 @@ namespace DFC.Composite.Regions.Functions
                 return httpResponseMessageHelper.BadRequest();
             }
 
-            if (!Uri.IsWellFormedUriString(regionRequest.RegionEndpoint, UriKind.Absolute))
+            const string PlaceMarkerStub= "{0}";
+            string regionEndpoint = regionRequest.RegionEndpoint;
+            
+            if (regionEndpoint.Contains(PlaceMarkerStub))
+            {
+                // this is allowable, so replace with a valid string to permit the Uri.IsWellFormedUriString to check the resulting string
+                regionEndpoint = regionEndpoint.Replace(PlaceMarkerStub, "valid");
+            }
+
+            if (!Uri.IsWellFormedUriString(regionEndpoint, UriKind.Absolute))
             {
                 loggerHelper.LogInformationMessage(log, correlationGuid, $"Request value for '{nameof(regionRequest.RegionEndpoint)}' is not a valid absolute Uri");
                 return httpResponseMessageHelper.BadRequest();

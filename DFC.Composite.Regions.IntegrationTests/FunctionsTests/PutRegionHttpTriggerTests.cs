@@ -47,6 +47,34 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
 
         [Test]
         [Category("HttpTrigger.Put")]
+        public async Task PutRegionHttpTrigger_ReturnsStatusCodeOk_ForUpdatedRegion_WithPlaceHolder()
+        {
+            // arrange
+            const string path = ValidPathValue + "_Put";
+            const PageRegions pageRegion = PageRegions.Body;
+            const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.OK;
+            var regionModel = new Regions.Models.Region()
+            {
+                DocumentId = new Guid(),
+                Path = path,
+                PageRegion = pageRegion,
+                RegionEndpoint = ValidEndpointValueWithPlaceHolder,
+                OfflineHtml = ValidHtmlFragment
+            };
+            var regionService = serviceProvider.GetService<Services.IRegionService>();
+
+            regionModel = await regionService.CreateAsync(regionModel);
+
+            // act
+            var result = await RunFunctionAsync(path, (int)pageRegion, regionModel);
+
+            // assert
+            Assert.IsInstanceOf<HttpResponseMessage>(result);
+            Assert.AreEqual(expectedHttpStatusCode, result.StatusCode);
+        }
+
+        [Test]
+        [Category("HttpTrigger.Put")]
         public async Task PutRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathIsNull()
         {
             // arrange

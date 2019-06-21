@@ -27,7 +27,7 @@ namespace DFC.Composite.Regions.Models
         public bool IsHealthy { get; set; }
 
         [Display(Description = "A url to the application that supplies content for the given area.")]
-        [Example(Description = "https://ncs.careers.azurewebsites/explore/sidebar")]
+        [Example(Description = "https://ncs.careers.azurewebsites/explore/sidebar or https://ncs.careers.azurewebsites/explore/{0}/contents")]
         [Required]
         public string RegionEndpoint { get; set; }
 

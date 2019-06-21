@@ -44,6 +44,35 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
 
         [Test]
         [Category("HttpTrigger.Post")]
+        public async Task PostRegionHttpTrigger_ReturnsStatusCodeOk_ForNewRegion_WithPlaceHolder()
+        {
+            // arrange
+            const string path = ValidPathValue + "_Post";
+            const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.OK;
+            var responseModel = new Regions.Models.Region()
+            {
+                Path = path,
+                PageRegion = PageRegions.Body,
+                RegionEndpoint = ValidEndpointValueWithPlaceHolder,
+                OfflineHtml = ValidHtmlFragment
+            };
+
+            _httpRequestHelper.GetResourceFromRequest<Regions.Models.Region>(_request).Returns(Task.FromResult(responseModel).Result);
+
+            _regionService.CreateAsync(Arg.Any<Regions.Models.Region>()).Returns(Task.FromResult(responseModel).Result);
+
+            _httpResponseMessageHelper.Ok(Arg.Any<string>()).Returns(x => new HttpResponseMessage(expectedHttpStatusCode));
+
+            // act
+            var result = await RunFunctionAsync(path);
+
+            // assert
+            Assert.IsInstanceOf<HttpResponseMessage>(result);
+            Assert.AreEqual(expectedHttpStatusCode, result.StatusCode);
+        }
+
+        [Test]
+        [Category("HttpTrigger.Post")]
         public async Task PostRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenPathIsNull()
         {
             // arrange
