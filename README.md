@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This project provides the Regions functions for use in the Composite UI (Shell application). The Regions are used to identify endpoints within child applications as part of their Application Registration/
+This project provides the Regions functions for use in the Composite UI (Shell application). The Regions are used to identify endpoints within child applications as part of their Application Registration.
 
 Please see https://github.com/SkillsFundingAgency/dfc-composite-paths for additional details about Application Registration.
 
