@@ -11,6 +11,7 @@ using DFC.JSON.Standard;
 using DFC.Swagger.Standard;
 using DFC.Composite.Regions.Services;
 using DFC.Composite.Regions.Cosmos.Provider;
+using Microsoft.Extensions.Logging;
 
 [assembly: WebJobsStartup(typeof(DFC.Composite.Regions.Startup.WebJobsExtensionStartup), "Web Jobs Extension Startup")]
 

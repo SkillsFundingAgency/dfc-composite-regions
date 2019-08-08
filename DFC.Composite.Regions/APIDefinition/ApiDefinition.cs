@@ -2,11 +2,13 @@
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using DFC.Common.Standard.Logging;
 using DFC.Functions.DI.Standard.Attributes;
 using DFC.Swagger.Standard;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Extensions.Logging;
 
 namespace DFC.Composite.Regions.APIDefinition
 {
@@ -22,12 +24,19 @@ namespace DFC.Composite.Regions.APIDefinition
         public static HttpResponseMessage Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = ApiDefRoute)]
             HttpRequest req,
-            [Inject] ISwaggerDocumentGenerator swaggerDocumentGenerator
+            ILogger logger,
+            [Inject] ISwaggerDocumentGenerator swaggerDocumentGenerator,
+            [Inject] ILoggerHelper loggerHelper
         )
         {
             string ApiSuffix = Environment.GetEnvironmentVariable("ApiSuffix"); 
-            string ApiTitle = "Regions " + ApiSuffix;
+            string ApiTitle = "Composite Regions " + ApiSuffix;
+
+            loggerHelper.LogMethodEnter(logger);
+
             var swagger = swaggerDocumentGenerator.GenerateSwaggerDocument(req, ApiTitle, ApiDescription, ApiDefinitionName, ApiVersion, Assembly.GetExecutingAssembly());
+
+            loggerHelper.LogMethodExit(logger);
 
             return new HttpResponseMessage(HttpStatusCode.OK)
             {
