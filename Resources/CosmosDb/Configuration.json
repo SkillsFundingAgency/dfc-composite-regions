@@ -2,7 +2,7 @@
     "DatabaseName": "composition",
     "Collections": [
       {
-        "CollectionName": "regions",
+        "CollectionName": "__CosmosCollectionId__",
         "OfferThroughput": 400,
         "StoredProcedures": [],
         "PartitionKey":  "Path"
