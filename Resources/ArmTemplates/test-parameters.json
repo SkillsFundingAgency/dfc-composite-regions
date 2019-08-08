@@ -37,6 +37,9 @@
         },
         "CosmosDbCollectionName": {
             "value": "not-a-real-collection"
+        },
+        "ApiTitleSuffix": {
+            "value": "-a-test-suffix"
         }
     }
 }
