@@ -12,9 +12,8 @@ namespace DFC.Composite.Regions.APIDefinition
 {
     public static class ApiDefinition
     {
-        public const string ApiTitle = "Regions";
         public const string ApiDefinitionName = "API-Definition";
-        public const string ApiDefRoute = ApiTitle + "/" + ApiDefinitionName;
+        public const string ApiDefRoute = "regions/" + ApiDefinitionName;
         public const string ApiDescription = "To support the Digital First Careers Composite UI Region definitions.";
 
         public const string ApiVersion = "1.0.0";
@@ -26,6 +25,8 @@ namespace DFC.Composite.Regions.APIDefinition
             [Inject] ISwaggerDocumentGenerator swaggerDocumentGenerator
         )
         {
+            string ApiSuffix = Environment.GetEnvironmentVariable("ApiSuffix"); 
+            string ApiTitle = "Regions " + ApiSuffix;
             var swagger = swaggerDocumentGenerator.GenerateSwaggerDocument(req, ApiTitle, ApiDescription, ApiDefinitionName, ApiVersion, Assembly.GetExecutingAssembly());
 
             return new HttpResponseMessage(HttpStatusCode.OK)
