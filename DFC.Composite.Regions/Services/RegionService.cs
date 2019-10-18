@@ -51,7 +51,8 @@ namespace DFC.Composite.Regions.Services
 
         public async Task<Region> PatchAsync(Region region, RegionPatch regionPatch)
         {
-            region.IsHealthy = regionPatch.IsHealthy;
+            //Temporaryly we are keeping the un-healthy node as during development and testing.
+            region.IsHealthy = true;// regionPatch.IsHealthy;
             region.LastModifiedDate = DateTime.UtcNow;
 
             return await ReplaceAsync(region);
