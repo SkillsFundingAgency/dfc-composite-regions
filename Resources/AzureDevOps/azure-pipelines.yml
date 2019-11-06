@@ -1,0 +1,40 @@
+variables:
+    ArmTemplateRoot: '$(Build.SourcesDirectory)\Resources\ArmTemplates' 
+    SolutionBaseName: 'DFC.Composite.Regions'
+    BuildPlatform: 'any cpu'
+    BuildConfiguration: 'release'
+
+resources:
+  repositories:
+  - repository: self
+  - repository: dfc-devops
+    type: github
+    name: SkillsFundingAgency/dfc-devops
+    ref: refs/tags/v1.6.5
+    endpoint: 'GitHub (ESFA)'
+
+jobs:
+
+# Build the app with the dfc-dotnetcore-build template
+- job: BuildDotNetStandard
+  displayName: Build-DotNetStandard
+  pool:
+    name: NCS - CI and CD
+    demands:
+    - msbuild
+    - visualstudio
+
+  steps:
+  - template: AzureDevOpsTemplates/Build/dfc-arm-build.yml@dfc-devops
+    parameters:
+      ArmTemplateRoot: $(ArmTemplateRoot)
+  - template: AzureDevOpsTemplates/Build/dfc-dotnetcorefunctionapp-build-notests.yml@dfc-devops
+    parameters:
+      SolutionBaseName: $(SolutionBaseName)
+      BuildPlatform: $(BuildPlatform)
+      BuildConfiguration: $(BuildConfiguration)
+
+
+
+
+
