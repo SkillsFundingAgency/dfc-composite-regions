@@ -10,10 +10,14 @@ resources:
   - repository: dfc-devops
     type: github
     name: SkillsFundingAgency/dfc-devops
-    ref: refs/tags/v1.6.5
+    ref: refs/tags/v1.6.7
     endpoint: 'GitHub (ESFA)'
 
 jobs:
+
+# - template: AzureDevOpsTemplates/Build/dfc-arm-build.yml@dfc-devops
+#   parameters:
+#     ArmTemplateRoot: $(ArmTemplateRoot)
 
 # Build the app with the dfc-dotnetcore-build template
 - job: BuildDotNetStandard
@@ -25,9 +29,6 @@ jobs:
     - visualstudio
 
   steps:
-  # - template: AzureDevOpsTemplates/Build/dfc-arm-build.yml@dfc-devops
-  #   parameters:
-  #     ArmTemplateRoot: $(ArmTemplateRoot)
   - template: AzureDevOpsTemplates/Build/dfc-dotnetcore-build-sonar.yml@dfc-devops
     parameters:
       SolutionBaseName: $(SolutionBaseName)
