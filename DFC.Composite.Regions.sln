@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.Composite.Regions", "DFC.Composite.Regions\DFC.Composite.Regions.csproj", "{6E7A0E1C-E0CC-4E97-B3CC-95C3A5997178}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.Composite.Regions.Tests", "DFC.Composite.Regions.Tests\DFC.Composite.Regions.Tests.csproj", "{6B5F0E1E-4BF9-4D2D-8D48-3026DF230E0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.Composite.Regions.UnitTests", "DFC.Composite.Regions.UnitTests\DFC.Composite.Regions.UnitTests.csproj", "{6B5F0E1E-4BF9-4D2D-8D48-3026DF230E0A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DFC.Composite.Regions.IntegrationTests", "DFC.Composite.Regions.IntegrationTests\DFC.Composite.Regions.IntegrationTests.csproj", "{C95DC9E0-4ADC-4B12-995E-7E160B857110}"
 EndProject
