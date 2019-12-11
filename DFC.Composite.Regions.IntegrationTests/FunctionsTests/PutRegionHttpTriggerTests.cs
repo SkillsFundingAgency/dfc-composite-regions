@@ -27,7 +27,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.OK;
             var regionModel = new Regions.Models.Region()
             {
-                DocumentId = new Guid(),
+                DocumentId = Guid.NewGuid(),
                 Path = path,
                 PageRegion = pageRegion,
                 RegionEndpoint = ValidEndpointValue,
@@ -55,7 +55,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.OK;
             var regionModel = new Regions.Models.Region()
             {
-                DocumentId = new Guid(),
+                DocumentId = Guid.NewGuid(),
                 Path = path,
                 PageRegion = pageRegion,
                 RegionEndpoint = ValidEndpointValueWithPlaceHolder,
@@ -84,7 +84,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var regionModel = new Regions.Models.Region()
             {
-                DocumentId = new Guid(),
+                DocumentId = Guid.NewGuid(),
                 Path = path,
                 PageRegion = pageRegion,
                 RegionEndpoint = endpoint,
@@ -110,7 +110,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var regionModel = new Regions.Models.Region()
             {
-                DocumentId = new Guid(),
+                DocumentId = Guid.NewGuid(),
                 Path = path,
                 PageRegion = pageRegion,
                 RegionEndpoint = endpoint,
@@ -136,7 +136,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var regionModel = new Regions.Models.Region()
             {
-                DocumentId = new Guid(),
+                DocumentId = Guid.NewGuid(),
                 Path = path,
                 PageRegion = pageRegion,
                 RegionEndpoint = endpoint,
@@ -162,7 +162,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var regionModel = new Regions.Models.Region()
             {
-                DocumentId = new Guid(),
+                DocumentId = Guid.NewGuid(),
                 Path = path,
                 PageRegion = pageRegion,
                 RegionEndpoint = endpoint,
@@ -228,7 +228,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var regionModel = new Regions.Models.Region()
             {
-                DocumentId = new Guid(),
+                DocumentId = Guid.NewGuid(),
                 Path = ValidPathValue + "_XXXX",
                 PageRegion = pageRegion,
                 RegionEndpoint = ValidEndpointValue,
@@ -253,7 +253,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var regionModel = new Regions.Models.Region()
             {
-                DocumentId = new Guid(),
+                DocumentId = Guid.NewGuid(),
                 Path = path,
                 PageRegion = PageRegions.SidebarRight,
                 RegionEndpoint = ValidEndpointValue,
@@ -279,7 +279,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var regionModel = new Regions.Models.Region()
             {
-                DocumentId = new Guid(),
+                DocumentId = Guid.NewGuid(),
                 Path = path,
                 PageRegion = pageRegion,
                 RegionEndpoint = endpoint,
@@ -305,7 +305,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var regionModel = new Regions.Models.Region()
             {
-                DocumentId = new Guid(),
+                DocumentId = Guid.NewGuid(),
                 Path = path,
                 PageRegion = pageRegion,
                 RegionEndpoint = endpoint,
@@ -330,7 +330,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var regionModel = new Regions.Models.Region()
             {
-                DocumentId = new Guid(),
+                DocumentId = Guid.NewGuid(),
                 Path = NullPathValue,
                 PageRegion = PageRegions.Body,
                 RegionEndpoint = ValidEndpointValue,
@@ -355,7 +355,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var regionModel = new Regions.Models.Region()
             {
-                DocumentId = new Guid(),
+                DocumentId = Guid.NewGuid(),
                 Path = path,
                 PageRegion = pageRegion,
                 RegionEndpoint = ValidEndpointValue,

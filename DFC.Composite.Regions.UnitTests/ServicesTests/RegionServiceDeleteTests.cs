@@ -22,7 +22,7 @@ namespace DFC.Composite.Regions.Tests.ServicesTests
             const PageRegions pageRegion = PageRegions.Body;
             var regionModel = new Region()
             {
-                DocumentId=new Guid(),
+                DocumentId=Guid.NewGuid(),
                 Path = path,
                 PageRegion = pageRegion
             };
