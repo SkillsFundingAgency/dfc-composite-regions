@@ -21,7 +21,7 @@ namespace DFC.Composite.Regions.Tests.ServicesTests
             const PageRegions pageRegion = PageRegions.Body;
             var regionModel = new Region()
             {
-                DocumentId = new Guid(),
+                DocumentId = Guid.NewGuid(),
                 Path = path,
                 PageRegion = pageRegion
             };
@@ -45,7 +45,7 @@ namespace DFC.Composite.Regions.Tests.ServicesTests
             _documentDbProvider.GetRegionByIdAsync(Arg.Any<Guid>()).Returns(Task.FromResult<Region>(null).Result);
 
             // act
-            var result = await _regionService.GetByIdAsync(new Guid());
+            var result = await _regionService.GetByIdAsync(Guid.NewGuid());
 
             // assert
             result.Should().BeNull();
