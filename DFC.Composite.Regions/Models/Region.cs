@@ -35,7 +35,7 @@ namespace DFC.Composite.Regions.Models
 
         [Display(Description = "Indicator stating that the application endpoint has a health check endpoint that requires monitoring by the HealthService. ")]
         [Example(Description = "true")]
-        public bool HeathCheckRequired { get; set; }
+        public bool HealthCheckRequired { get; set; }
 
         [Display(Description = "If the application is marked as unhealthy then this markup will be used to populate the region.")]
         [Example(Description = "<b>Service unavailable</b>")]

@@ -36,7 +36,7 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             };
             var regionPatchModel = new JsonPatchDocument<Region>();
 
-            regionPatchModel.Add(x => x.HeathCheckRequired, isHealthy);
+            regionPatchModel.Add(x => x.HealthCheckRequired, isHealthy);
 
             var regionService = serviceProvider.GetService<Services.IRegionService>();
 
