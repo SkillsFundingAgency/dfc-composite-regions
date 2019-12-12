@@ -32,7 +32,7 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
             };
             var regionPatchModel = new JsonPatchDocument<Region>();
 
-            regionPatchModel.Add(x => x.HeathCheckRequired, true);
+            regionPatchModel.Add(x => x.HealthCheckRequired, true);
 
             _httpRequestHelper.GetResourceFromRequest<JsonPatchDocument<Region>>(_request).Returns(Task.FromResult(regionPatchModel).Result);
             _regionService.GetAsync(Arg.Any<string>(), Arg.Any<PageRegions>()).Returns(Task.FromResult(responseModel).Result);
