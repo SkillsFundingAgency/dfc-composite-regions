@@ -1,11 +1,12 @@
-﻿using System;
+﻿using DFC.Composite.Regions.Models;
+using Microsoft.AspNetCore.JsonPatch;
+using Newtonsoft.Json;
+using NSubstitute;
+using NUnit.Framework;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using NSubstitute;
-using NSubstitute.ExceptionExtensions;
-using NUnit.Framework;
 using static DFC.Composite.Regions.Models.Constants;
 
 namespace DFC.Composite.Regions.Tests.FunctionsTests
@@ -24,13 +25,18 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.OK;
             var responseModel = new Regions.Models.Region()
             {
-                DocumentId = new Guid()
+                DocumentId = Guid.NewGuid(),
+                Path = "a-path",
+                PageRegion = PageRegions.Body,
+                RegionEndpoint = ValidEndpointValueWithPlaceHolder,
             };
-            var requestRegionPatchModel = new Regions.Models.RegionPatch();
+            var regionPatchModel = new JsonPatchDocument<Region>();
 
-            _httpRequestHelper.GetResourceFromRequest<Regions.Models.RegionPatch>(_request).Returns(Task.FromResult(requestRegionPatchModel).Result);
+            regionPatchModel.Add(x => x.HealthCheckRequired, true);
+
+            _httpRequestHelper.GetResourceFromRequest<JsonPatchDocument<Region>>(_request).Returns(Task.FromResult(regionPatchModel).Result);
             _regionService.GetAsync(Arg.Any<string>(), Arg.Any<PageRegions>()).Returns(Task.FromResult(responseModel).Result);
-            _regionService.PatchAsync(Arg.Any<Regions.Models.Region>(), Arg.Any<Regions.Models.RegionPatch>()).Returns(Task.FromResult(responseModel).Result);
+            _regionService.ReplaceAsync(Arg.Any<Regions.Models.Region>()).Returns(Task.FromResult(responseModel).Result);
 
             _httpResponseMessageHelper.Ok(Arg.Any<string>()).Returns(x => new HttpResponseMessage(expectedHttpStatusCode));
 
@@ -44,23 +50,25 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
 
         [Test]
         [Category("HttpTrigger.Patch")]
-        public async Task PatchRegionHttpTrigger_ReturnsStatusCodeUnprocessableEntity_WhenMissingBody()
+        public async Task PatchRegionHttpTrigger_ReturnsStatusCodeBadRequest_WhenMissingBody()
         {
             // arrange
             const string path = ValidPathValue + "_Patch";
             const PageRegions pageRegion = PageRegions.Body;
-            const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.UnprocessableEntity;
+            const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.BadRequest;
             var responseModel = new Regions.Models.Region()
             {
-                DocumentId = new Guid()
+                DocumentId = Guid.NewGuid(),
+                Path = "a-path",
+                PageRegion = PageRegions.Body,
+                RegionEndpoint = ValidEndpointValueWithPlaceHolder,
             };
 
-            _httpRequestHelper.GetResourceFromRequest<Regions.Models.RegionPatch>(_request).Throws(new JsonException());
-
+            _httpRequestHelper.GetResourceFromRequest<JsonPatchDocument<Region>>(_request).Returns(Task.FromResult(default(JsonPatchDocument<Region>)).Result);
             _regionService.GetAsync(Arg.Any<string>(), Arg.Any<PageRegions>()).Returns(Task.FromResult(responseModel).Result);
-            _regionService.PatchAsync(Arg.Any<Regions.Models.Region>(), Arg.Any<Regions.Models.RegionPatch>()).Returns(Task.FromResult(responseModel).Result);
+            _regionService.ReplaceAsync(Arg.Any<Regions.Models.Region>()).Returns(Task.FromResult(responseModel).Result);
 
-            _httpResponseMessageHelper.UnprocessableEntity(Arg.Any<JsonException>()).Returns(x => new HttpResponseMessage(expectedHttpStatusCode));
+            _httpResponseMessageHelper.BadRequest().Returns(x => new HttpResponseMessage(expectedHttpStatusCode));
 
             // act
             var result = await RunFunctionAsync(path, (int)pageRegion);
@@ -78,7 +86,9 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
             const string path = ValidPathNoContentValue;
             const PageRegions pageRegion = PageRegions.Body;
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.NoContent;
+            var regionPatchModel = new JsonPatchDocument<Region>();
 
+            _httpRequestHelper.GetResourceFromRequest<JsonPatchDocument<Region>>(_request).Returns(Task.FromResult(regionPatchModel).Result);
             _regionService.GetAsync(Arg.Any<string>(), Arg.Any<PageRegions>()).Returns(Task.FromResult<Regions.Models.Region>(null).Result);
 
             _httpResponseMessageHelper.NoContent().Returns(x => new HttpResponseMessage(expectedHttpStatusCode));

@@ -23,7 +23,8 @@ namespace DFC.Composite.Regions.Tests.ServicesTests
             var regionModel = new Region()
             {
                 Path = path,
-                PageRegion = pageRegion
+                PageRegion = pageRegion,
+                RegionEndpoint= ValidEndpointValueWithPlaceHolder,
             };
             var resourceResponse = MockResourceResponse(HttpStatusCode.Created);
 

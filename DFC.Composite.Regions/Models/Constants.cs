@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-
-namespace DFC.Composite.Regions.Models
+﻿namespace DFC.Composite.Regions.Models
 {
     public static class Constants
     {
@@ -16,8 +11,8 @@ namespace DFC.Composite.Regions.Models
             Body,
             SidebarRight,
             SidebarLeft,
-            BodyFooter
+            BodyFooter,
+            HeroBanner
         }
-
     }
 }

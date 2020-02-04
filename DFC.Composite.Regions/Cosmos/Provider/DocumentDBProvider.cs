@@ -134,8 +134,10 @@ namespace DFC.Composite.Regions.Cosmos.Provider
             }
 
             var documentUri = DocumentDBHelper.CreateDocumentUri(documentId);
+            var existingDocument = await GetRegionByIdAsync(documentId).ConfigureAwait(false);
+            var partitionKey = new PartitionKey(existingDocument?.Path);
 
-            var response = await client.DeleteDocumentAsync(documentUri, new RequestOptions() { PartitionKey = new PartitionKey(Undefined.Value) });
+            var response = await client.DeleteDocumentAsync(documentUri, new RequestOptions() { PartitionKey = partitionKey });
 
             return response;
         }

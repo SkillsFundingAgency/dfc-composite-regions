@@ -49,15 +49,6 @@ namespace DFC.Composite.Regions.Services
             return response.StatusCode == HttpStatusCode.Created ? (dynamic)response.Resource : null;
         }
 
-        public async Task<Region> PatchAsync(Region region, RegionPatch regionPatch)
-        {
-            //Temporaryly we are keeping the un-healthy node as during development and testing.
-            region.IsHealthy = true;// regionPatch.IsHealthy;
-            region.LastModifiedDate = DateTime.UtcNow;
-
-            return await ReplaceAsync(region);
-        }
-
         public async Task<Region> ReplaceAsync(Region region)
         {
             region.LastModifiedDate = DateTime.UtcNow;

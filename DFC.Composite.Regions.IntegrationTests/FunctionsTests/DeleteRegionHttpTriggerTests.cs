@@ -30,7 +30,8 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             var regionModel = new Region()
             {
                 Path = path,
-                PageRegion = pageRegion
+                PageRegion = pageRegion,
+                RegionEndpoint = ValidEndpointValueWithPlaceHolder,
             };
             var regionService = serviceProvider.GetService<Services.IRegionService>();
 
