@@ -22,7 +22,7 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
             const HttpStatusCode expectedHttpStatusCode = HttpStatusCode.OK;
             var responseModel = new Regions.Models.Region()
             {
-                DocumentId = new Guid()
+                DocumentId = Guid.NewGuid()
             };
 
             _regionService.GetAsync(Arg.Any<string>(), Arg.Any<PageRegions>()).Returns(Task.FromResult(responseModel).Result);

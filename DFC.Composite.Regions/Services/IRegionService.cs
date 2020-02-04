@@ -15,8 +15,6 @@ namespace DFC.Composite.Regions.Services
 
         Task<Region> CreateAsync(Region region);
 
-        Task<Region> PatchAsync(Region region, RegionPatch regionPatch);
-
         Task<Region> ReplaceAsync(Region region);
 
         Task<bool> DeleteAsync(Guid documentId);

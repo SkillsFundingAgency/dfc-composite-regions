@@ -29,12 +29,14 @@ namespace DFC.Composite.Regions.IntegrationTests.FunctionsTests
             var regionModels = new List<Region>() {
                 new Region() {
                     Path = path,
-                    PageRegion = Constants.PageRegions.Body
+                    PageRegion = Constants.PageRegions.Body,
+                    RegionEndpoint = ValidEndpointValueWithPlaceHolder,
                 },
                 new Region()
                 {
                     Path = path,
-                    PageRegion = Constants.PageRegions.Breadcrumb
+                    PageRegion = Constants.PageRegions.Breadcrumb,
+                    RegionEndpoint = ValidEndpointValueWithPlaceHolder,
                 }
             };
             var regionService = serviceProvider.GetService<Services.IRegionService>();
