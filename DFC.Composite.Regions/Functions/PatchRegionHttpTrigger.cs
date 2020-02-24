@@ -72,8 +72,9 @@ namespace DFC.Composite.Regions.Functions
             JsonPatchDocument<Region> regionPatch;
             try
             {
-                regionPatch = await httpRequestHelper.GetResourceFromRequest<JsonPatchDocument<Region>>(req);
-
+                var requestBody = await req.ReadAsStringAsync();
+                regionPatch = JsonConvert.DeserializeObject<JsonPatchDocument<Region>>(requestBody);
+                
                 if (regionPatch == null)
                 {
                     loggerHelper.LogException(log, correlationId, "Request body is empty", null);
