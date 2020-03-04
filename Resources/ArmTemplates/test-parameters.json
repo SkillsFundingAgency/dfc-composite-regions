@@ -42,7 +42,7 @@
             "value": "-a-test-suffix"
         },
         "enableAlerts": {
-            "value": "false"
+            "value": false
         }
     }
 }
