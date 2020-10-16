@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using DFC.Common.Standard.Logging;
+using DFC.Composite.Regions.Models;
 using DFC.Composite.Regions.Services;
 using DFC.Functions.DI.Standard.Attributes;
 using DFC.HTTP.Standard;
@@ -70,7 +71,7 @@ namespace DFC.Composite.Regions.Functions
                 return httpResponseMessageHelper.BadRequest();
             }
 
-            var pathRegex = new Regex(@"^[A-Za-z0-9.,-_]*$");
+            var pathRegex = new Regex(PathRegEx);
 
             if (path.Length > 100 || !pathRegex.IsMatch(path))
             {
