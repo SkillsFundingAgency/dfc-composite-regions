@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DFC.Composite.Regions.Models;
+﻿using DFC.Composite.Regions.Models;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using static DFC.Composite.Regions.Models.Constants;
 
 namespace DFC.Composite.Regions.Tests.ServicesTests
@@ -38,7 +37,7 @@ namespace DFC.Composite.Regions.Tests.ServicesTests
 
             // assert
             results.Should().NotBeNull();
-            results.Count().Should().BeGreaterOrEqualTo(2);
+            results.Count.Should().BeGreaterOrEqualTo(2);
             results[0].Path.Should().Be(regionModels[0].Path);
             results[0].PageRegion.Should().Be(regionModels[0].PageRegion);
             results[1].Path.Should().Be(regionModels[1].Path);

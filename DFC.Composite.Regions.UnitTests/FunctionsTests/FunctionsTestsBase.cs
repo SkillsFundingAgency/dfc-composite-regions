@@ -3,9 +3,7 @@ using DFC.HTTP.Standard;
 using DFC.JSON.Standard;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -40,7 +38,7 @@ namespace DFC.Composite.Regions.Tests.FunctionsTests
         [TearDown]
         public void TearDown()
         {
-            _log =null;
+            _log = null;
             _request = null;
             _loggerHelper = null;
             _httpRequestHelper = null;
